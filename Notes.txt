@@ -1,0 +1,195 @@
+本月第**次加班，预计加班**小时（本月累计加班##小时，含本次）。加班内容： ****。
+
+    void printWUW(std::shared_ptr<ITensor> tensor,std::string name){
+        std::cout<<"===============  "<<name<<" begin======================"<<std::endl;
+        auto tmp_tensor = std::static_pointer_cast<CLTensor>(tensor);
+        printf("input dim %d %d %d %d\n",tmp_tensor->getDim().n, tmp_tensor->getDim().c, tmp_tensor->getDim().h, tmp_tensor->getDim().w);
+        printf(" scale  %f ZeroPoint %d getDataType %d\n",  tmp_tensor->getScale(), tmp_tensor->getZeroPoint(),tmp_tensor->getDataType());
+
+        std::string golden_txtdata = "/data/local/tmp/zhanglt_test/eden/" \
+                                        + std::to_string(tmp_tensor->getDim().n) + "_" + std::to_string(tmp_tensor->getDim().c) +\
+                                        "_" + std::to_string(tmp_tensor->getDim().h) + "_" + std::to_string(tmp_tensor->getDim().w) + ".txt";
+
+        printf("path %s\n", golden_txtdata.c_str());
+
+        tmp_tensor->dumpTensorData(golden_txtdata.c_str());
+        std::cout<<"===============  "<<name<<" end======================"<<std::endl;
+    }
+
+
+###################fault made###################
+create_feature_map的index忘了++
+git reset --hard 移动到最近checkout，在此期间所有changes均消失
+###################fault made###################
+git clone ssh://lt.zhang@10.166.101.43:29418/platform/vendor/samsung_slsi/exynos/enn/source
+git checkout -b develop origin/develop
+#############################git##################################
+git add
+git commit --signoff
+git push origin HEAD:refs/for/develop
+=====================
+本地git紊乱
+git reset --hard commitid
+git pull origin develop
+=====================
+changeid 中断无法push
+(1) git reset --soft commitid3
+
+(2) git status 可以看到绿色的已经add过的文件（即commitid1和commitid2的改动）
+
+(3) git commit -s #添加评论，保存退出后会生成change_id
+
+(4) git log 可以看到已经有了change_id
+
+(5) git push origin HEAD:refs/for/工作分支
+
+=====================
+git push --no-thin origin HEAD:refs/for/s-p-mcd-eden
+
+##continue commit
+git add
+git commit --amend
+
+## source
+git push origin HEAD:refs/for/s-p-mcd-eden
+git push origin HEAD:refs/for/develop
+
+第一次提交，先安装hook
+gitdir=$(git rev-parse --git-dir); scp -p -P 29418 lt.zhang@10.166.101.43:hooks/commit-msg ${gitdir}/hooks/
+git commit --amend
+
+## driver
+git push origin HEAD:refs/for/s-q-mcd-stable
+撤销commit
+git reset --soft HEAD^
+撤销add
+use "git reset HEAD <file>..." to unstage
+=========
+在多人协作开发时，经常碰到同事把最新修改推送到远程库，你在本地也做了修改，这个时候无论是执行git pull还是执行git push都会提示错误，我的解决方式如下：
+
+先隐藏掉本地的修改，然后执行git pull从代码块拉取最新代码，具体步骤如下：
+
+一.输入 git status 查看本地的修改
+
+二.输入git stash 隐藏掉本地修改
+
+三.输入 git pull 从代码库拉取更新
+
+四.输入 git stash pop stash@{版本号}
+
+五.git add 、git commit 、git push 搞定
+
+git stash save
+git pull
+git stash apply
+=========
+
+origin s-p-mcd-eden
+# rebase
+
+* git fetch origin master
+
+* git stash
+
+* git rebase origin/master
+
+* git mergetool
+
+* git rebase --continue
+
+* git stash pop
+
+* git add ...
+
+* git commit --amend
+
+* git push
+
+
+#############################git##################################
+
+export  ANDROID_TOP="/home/zhanglt/pamir/platform/"
+
+http://devportal.sec.samsung.net:8080/job/UNIFIED/job/unified.pipeline.onepass_test/ UENN CI
+
+
+
+[鹿馨 / Xin Lu] 7/26/2021 10:30
+把事前申请界面 截图，然后提事后，在事后申请界面的附件里附上截图
+
+[鹿馨 / Xin Lu] 7/26/2021 10:31
+截图需要放到 前面有EDM图标的Multimedia 目录，才能添加
+
+[鹿馨 / Xin Lu] 7/26/2021 10:32
+事前申请 记录，在GHRP的审批箱 的提交箱里
+
+#################################################################
+adb -H 109.105.116.64 push /home/zhanglt/pamir/platform/out/target/product/erd9925/vendor/etc/vintf/manifest/android.hardware.neuralnetworks-shim-service-gpu.xml /vendor/etc/vintf/manifest/
+
+
+adb -H 109.105.116.$1 logcat |grep -v -E 'adbd|Usb|denied|gnss|thermal|amdgpu_cs_parser_bos mem type 1 domain allow 2 prefer 2|amdgpu_cs_parser_bos'
+
+NNAPI 目录：platform/packages/modules/NeuralNetworks/      
+ VTS的用例目录： platform/packages/modules/NeuralNetworks/runtime/test/specs
+
+ps -A | grep neural | awk '{print $2}' | xargs kill
+export LD_LIBRARY_PATH=.
+/data/VtsHalNeuralnetworksTargetTest --gtest_filter=TestGenerated/GeneratedTest.Test/android_hardware_neuralnetworks_IDevice_gpu_sl_shim_
+/data/VtsHalNeuralnetworksTargetTest --gtest_filter=TestGenerated/GeneratedTest.Test/android_hardware_neuralnetworks_IDevice_gpu_sl_shim_conv_float
+/data/VtsHalNeuralnetworksTargetTest --gtest_filter=TestGenerated/GeneratedTest.Test/android_hardware_neuralnetworks_IDevice_gpu_sl_shim_sub*:-*all_inputs*:*zero*
+/data/VtsHalNeuralnetworksTargetTest --gtest_filter=TestGenerated/GeneratedTest.Test/android_hardware_neuralnetworks_IDevice_gpu_sl_shim_mean_all_tensors_as_inputs_all_inputs_as_internal
+
+python visualizer.py ../../core/export/v2/schema/schema.fbs ann_.nnc ann_gather.html
+
+#################################################################
+
+adb -H 109.105.116.$1 shell "LD_LIBRARY_PATH=$PATH_ENN $PATH_BIN/enn_test_userdriver --gtest_filter=*gpu*:*CL* --gtest_break_on_failure
+adb -H 109.105.116.$1 shell "LD_LIBRARY_PATH=$PATH_ENN $PATH_BIN/enn_gpu_op_test
+adb -H 109.105.116.$1 shell "LD_LIBRARY_PATH=$PATH_ENN $PATH_BIN/EnnTest_v2_lib --model /data/vendor/enn/models/pamir/GPU_IV3/GPU_InceptionV3.nnc --input /data/vendor/enn/models/pamir/GPU_IV3/GPU_InceptionV3_input_data.bin --golden /data/vendor/enn/models/pamir/GPU_IV3/GPU_InceptionV3_golden_data.bin --threshold 0.017 --iter 2 --repeat 5 --async
+adb -H 109.105.116.$1 shell "LD_LIBRARY_PATH=$PATH_ENN $PATH_BIN/EnnTest_v2_lib --model /data/vendor/enn/models/pamir/GPU_MobileBert/GPU_mobile_bert_gpu.nnc --input /data/vendor/enn/models/pamir/GPU_MobileBert/GPU_mobile_bert_gpu_input.bin /data/vendor/enn/models/pamir/GPU_MobileBert/GPU_mobile_bert_gpu_input1.bin /data/vendor/enn/models/pamir/GPU_MobileBert/GPU_mobile_bert_gpu_input2.bin --golden /data/vendor/enn/models/pamir/GPU_MobileBert/GPU_mobile_bert_gpu_golden.bin /data/vendor/enn/models/pamir/GPU_MobileBert/GPU_mobile_bert_gpu_golden1.bin --threshold 0.384 --iter 2 --repeat 2
+
+
+./enn_test_userdriver --gtest_filter=*gpu*:*CL* --gtest_break_on_failure
+./enn_gpu_op_test
+./EnnTest_v2_lib --model /data/vendor/enn/models/pamir/GPU_IV3/GPU_InceptionV3.nnc --input /data/vendor/enn/models/pamir/GPU_IV3/GPU_InceptionV3_input_data.bin --golden /data/vendor/enn/models/pamir/GPU_IV3/GPU_InceptionV3_golden_data.bin --threshold 0.017 --iter 2 --repeat 5 --async
+./EnnTest_v2_lib --model /data/vendor/enn/models/pamir/GPU_MobileBert/GPU_mobile_bert_gpu.nnc --input /data/vendor/enn/models/pamir/GPU_MobileBert/GPU_mobile_bert_gpu_input.bin /data/vendor/enn/models/pamir/GPU_MobileBert/GPU_mobile_bert_gpu_input1.bin /data/vendor/enn/models/pamir/GPU_MobileBert/GPU_mobile_bert_gpu_input2.bin --golden /data/vendor/enn/models/pamir/GPU_MobileBert/GPU_mobile_bert_gpu_golden.bin /data/vendor/enn/models/pamir/GPU_MobileBert/GPU_mobile_bert_gpu_golden1.bin --threshold 0.384 --iter 2 --repeat 2
+
+#################################################################
+
+chmod -R
+
+Gerrit 注意ssh:29418的git fetch，而不是http:81
+
+
+###################
+source build/envsetup.sh
+lunch
+
+########################
+modify "graphgen_headers" to "graphgen_saidl_headers" in "vendor/samsung_slsi/exynos/enn_saidl_driver/Android.bp:"
+> Do not rename  Android.bp of vendor/samsung_slsi/exynos/enn/Android.bp
+> Rename All Android.bp files inside  vendor/samsung_slsi/exynos/enn/source
+> Replace "vendor: true" to "vendor_available: true in " vendor/samsung_slsi/exynos/enn/Android.bp"
+
+
+
+df -h data
+mount -o remount -rw /dev/block/dm-2
+
+repo forall -c 
+repo forall -c git reset --hard
+repo sync -j16 --force-sync
+
+#repo回滚
+repo sync -d
+repo forall -c 'git reset --hard'    # Remove all working directory (and staged) changes.
+repo forall -c 'git clean -f -d'     # Clean untracked files
+
+
+rename()
+{
+     find $1 -name read.mk -exec mv {} {}-bak \;
+}
+
+
+在各个主要控制函数里输出控制变量

@@ -1,0 +1,1470 @@
+gg_10299#0823#1
+average_pool
+concat
+div
+
+We found that some previously passed cases were failed using new gg libs gg_10299#0823#1.
+env: gg_10299#0823#1, UENN_0823
+test command:
+./vts.sh 214 *ed/Ge*shim_add*:*ed/Ge*shim_avg_pool*:*ed/Ge*shim_bi*lstm*:*ed/Ge*shim_concat*:*ed/Ge*shim_conv*:*ed/Ge*shim_depthwise*:*ed/Ge*shim_depth_to_space*:*ed/Ge*shim_div*:*ed/Ge*shim_fully*:*ed/Ge*shim_gather*:*ed/Ge*shim_logistic*:*ed/Ge*shim_max_pool*:*ed/Ge*shim_mean*:*ed/Ge*shim_mul_*:*ed/Ge*shim_reduce_min*:*ed/Ge*shim_relu_*:*ed/Ge*shim_reshape*:*ed/Ge*shim_resize_bi*:*ed/Ge*shim_softmax*:*ed/Ge*shim_split*:*ed/Ge*shim_squeeze*:*ed/Ge*shim_sub*:*ed/Ge*shim_tanh*:*ed/Ge*shim_transpose_conv*:-*conv*inputs*:*fully*inputs*:*gather*inputs*:*mean*inputs*:*lstm*
+failed op: average_pool, concat, div, sub
+
+
+
+adb -H 109.105.116.$1 push $LOCAL_MANIFEST_PATH/android.hardware.neuralnetworks-shim-service-gpu.xml $DEVICE_MANIFEST_PATH
+adb -H 109.105.116.$1 push $HOME_PATH/VtsHalNeuralnetworksTargetTest /data/
+https://github.com/AaronZLT/xxx/archive/refs/heads/main.zip
+index	name	type	shape	buffer	quantization	extram_param	value
+2	FILTER	INT8	[1, 2, 2, 4]	1	None	{u'channel_dim': 3, u'scales': [1.0, 0.5, 1.0, 0.5]}	01010101010101010101010101010101
+3	BIAS	INT32	[4]	2	None	None	4 4 4 4
+
+mean_quant8_2_all_tensors_as_inputs' logs:
+
+I20210810 20:12:30.737640 13011 graphgen_export.cpp:35] GraphGenExport::generateNNC is called
+I20210810 20:12:30.737666 13011 nnc_export.cpp:15] NNCExport::createNNC is called
+I20210810 20:12:30.737890 13011 nnc_export.cpp:48] export layer type: Mean
+hardware/interfaces/neuralnetworks/aidl/vts/functional/VtsHalNeuralnetworks.cpp:62: Failure
+Value of: prepareLaunchStatus.isOk()
+  Actual: false
+Expected: true
+Status(-129, EX_TRANSACTION_FAILED): 'DEAD_OBJECT: '
+
+#!/bin/bash
+Needs Code-Review
+[GPU UD] fix VTS of SQUEEZE squeezedims nullptr issue
+http://10.166.101.43:81/#/c/684567/
+[GPU UD] fix VTS of SQUEEZE squeezedims nullptr issue
+Needs Code-Review
+
+#TARGET_NAME="universal2100"
+TARGET_NAME="universal9925"
+DRIVER_TARGET_NAME="erd9925"
+#TARGET_NAME="erd9925"
+export  ANDROID_TOP="/home/zhanglt/pamir/platform/"
+# PATH_ENN=/data/local/tmp/luxin/uenn/
+# PATH_SERVIER=/data/local/tmp/luxin/uenn/
+# PATH_BIN=/data/local/tmp/luxin/uenn/
+
+#PATH_ENN=/vendor/lib64/
+#PATH_SERVIER=/vendor/bin/hw/
+#PATH_BIN=/vendor/bin/
+
+/data/VtsHalNeuralnetworksTargetTest --gtest_filter=TestGenerated/GeneratedTest.Test/android_hardware_neuralnetworks_IDevice_gpu_sl_shim_tanh* 
+PATH_GPU_TEST=/data/local/tmp/gpu_test/
+
+ENN_PATH=vendor/samsung_slsi/exynos/enn
+ENN_LIB_PATH=$ENN_PATH/lib64
+GRAPHGEN_LIB_PATH=vendor/samsung_slsi/exynos/enn_saidl_driver/graphgen/lib64
+GPU_DRIVER_SO_PATH=out/target/product/$DRIVER_TARGET_NAME/vendor/lib64
+GPU_RIVER_SERVICE_PATH=out/target/product/$DRIVER_TARGET_NAME/vendor/bin/hw
+TEST_LIB_PATH=$ANDROID_TOP/out/target/product/$TARGET_NAME/vendor/bin
+
+#rm -rf $ANDROID_TOP/out/target/product/$TARGET_NAME/vendor/bin/*test*
+#rm -rf $ANDROID_TOP/out/target/product/$TARGET_NAME/vendor/lib64/libenn*.so
+
+#echo "build cache has been cleaned!"
+# ./build.sh -t $TARGET_NAME -l
+# ./build.sh -t $TARGET_NAME
+# ./build.sh -t $TARGET_NAME -l -p
+# ./build.sh -t $TARGET_NAME -r -p
+
+#./build.sh -t $TARGET_NAME
+
+#adb -H 109.105.116.$1 root
+#adb -H 109.105.116.$1 remount
+
+#adb -H 109.105.116.$1 push $ANDROID_TOP/out/target/product/$TARGET_NAME/vendor/lib64/libenn* $PATH_GPU_TEST
+#adb -H 109.105.116.$1 push $ANDROID_TOP/out/target/product/$TARGET_NAME/vendor/bin/*test* $PATH_GPU_TEST
+#adb -H 109.105.116.$1 push $ANDROID_TOP/out/target/product/$TARGET_NAME/vendor/bin/*Test* $PATH_GPU_TEST
+#adb -H 109.105.116.$1 push $ANDROID_TOP/out/target/product/$TARGET_NAME/vendor/lib64/libenn* $PATH_ENN
+#Write here
+cp -rf $ANDROID_TOP/out/target/product/$TARGET_NAME/vendor/lib64/libenn*.so $ANDROID_TOP/$ENN_LIB_PATH
+#End here
+#Last use
+adb -H 109.105.116.$1 push $TEST_LIB_PATH/*test* $PATH_GPU_TEST
+
+adb -H 109.105.116.$1 push $ANDROID_TOP/$ENN_LIB_PATH/libenn*.so $PATH_GPU_TEST
+adb -H 109.105.116.$1 push $ANDROID_TOP/$GRAPHGEN_LIB_PATH/*.so $PATH_GPU_TEST
+adb -H 109.105.116.$1 push $ANDROID_TOP/$GPU_DRIVER_SO_PATH/neuralnetworks_gpu_sl_driver_prebuilt.so $PATH_GPU_TEST
+adb -H 109.105.116.$1 push $ANDROID_TOP/$GPU_RIVER_SERVICE_PATH/android.hardware.neuralnetworks-shim-service-gpu $PATH_GPU_TEST
+adb -H 109.105.116.$1 push $ANDROID_TOP/$ENN_PATH/prepare.sh $PATH_GPU_TEST
+adb -H 109.105.116.$1 shell chmod -R 777 $PATH_GPU_TEST
+
+#Last use end
+#adb -H 109.105.116.$1 push $ANDROID_TOP/out/target/product/$TARGET_NAME/vendor/bin/EnnTest_v2*  $PATH_GPU_TEST
+#adb -H 109.105.116.$1 push $ANDROID_TOP/out/target/product/$TARGET_NAME/vendor/bin/hw/vendor.samsung_slsi.hardware.enn@1.0-service $PATH_GPU_TEST
+#adb -H 109.105.116.$1 push $ANDROID_TOP/out/target/product/$TARGET_NAME/vendor/lib64/vendor.samsung_slsi.hardware.enn@1.0.so $PATH_GPU_TEST
+#adb -H 109.105.116.$1 push $ANDROID_TOP/vendor/samsung_slsi/exynos/enn/source/src/medium/hidl/enn/1.0/manifest_enn.xml /vendor/etc/vintf/
+
+#  adb56 push /data/luxin/luxin/UENN_S/0601_000/origin-model/input/inceptionv3-a1_3x3_1-ImageNet-OnlyInputLayer-v2.nnc /data/vendor/enn/models
+
+#adb -H 109.105.116.$1 shell sync
+#adb -H 109.105.116.$1 shell "chmod 777 /vendor/bin/enn*"
+#adb -H 109.105.116.$1 shell "chmod 777 /vendor/bin/hw/vendor.samsung_slsi.hardware.enn@1.0-service"
+adb -H 109.105.116.64 push /home/zhanglt/pamir/platform/out/target/product/erd9925/vendor/etc/vintf/manifest/android.hardware.neuralnetworks-shim-service-gpu.xml /vendor/etc/vintf/manifest/
+adb -H 109.105.116.64 push /home/zhanglt/VtsHalNeuralnetworksTargetTest /data/
+
+===============  out after begin======================
+>build -t universal9925
+>source build/......
+>lunch universal9925
+git fetch ssh://lt.zhang@10.166.101.43:29418/keystone/android12/platform/vendor/samsung_slsi/exynos/enn refs/changes/33/680533/1 && git checkout FETCH_HEAD
+
+#!/bin/bash
+
+
+rm $ANDROID_TOP/out/target/product/$1/vendor/bin/*
+rm $ANDROID_TOP/out/target/product/$1/vendor/lib64/libenn*
+
+
+# TARGET_NAME="universal2100"
+TARGET_NAME="erd9925"
+export  ANDROID_TOP="/home/zhanglt/pamir/platform/"
+# PATH_ENN=/data/local/tmp/luxin/uenn/
+# PATH_SERVIER=/data/local/tmp/luxin/uenn/
+# PATH_BIN=/data/local/tmp/luxin/uenn/
+
+#PATH_ENN=/vendor/lib64/
+#PATH_SERVIER=/vendor/bin/hw/
+#PATH_BIN=/vendor/bin/
+
+PATH_GPU_TEST=/data/local/tmp/gpu_test/
+ENN_LIB_PATH=vendor/samsung_slsi/exynos/enn/lib64
+GRAPHGEN_LIB_PATH=vendor/samsung_slsi/exynos/enn_saidl_driver/graphgen/lib64
+GPU_DRIVER_SO_PATH=out/target/product/$TARGET_NAME/vendor/lib64
+GPU_RIVER_SERVICE_PATH=out/target/product/$TARGET_NAME/vendor/bin/hw
+TEST_LIB_PATH=$ANDROID_TOP/out/target/product/$TARGET_NAME/vendor/bin
+
+rm $ANDROID_TOP/out/target/product/$TARGET_NAME/vendor/bin/*
+rm $ANDROID_TOP/out/target/product/$TARGET_NAME/vendor/lib64/libenn*
+
+#echo "build cache has been cleaned!"
+# ./build.sh -t $TARGET_NAME -l
+# ./build.sh -t $TARGET_NAME -l -p
+# ./build.sh -t $TARGET_NAME -r -p
+
+#./build.sh -t $TARGET_NAME
+
+#adb -H 109.105.116.$1 root
+#adb -H 109.105.116.$1 remount
+
+#adb -H 109.105.116.$1 push $ANDROID_TOP/out/target/product/$TARGET_NAME/vendor/lib64/libenn* $PATH_GPU_TEST
+#adb -H 109.105.116.$1 push $ANDROID_TOP/out/target/product/$TARGET_NAME/vendor/bin/*test* $PATH_GPU_TEST
+#adb -H 109.105.116.$1 push $ANDROID_TOP/out/target/product/$TARGET_NAME/vendor/bin/*Test* $PATH_GPU_TEST
+#adb -H 109.105.116.$1 push $ANDROID_TOP/out/target/product/$TARGET_NAME/vendor/lib64/libenn* $PATH_ENN
+adb -H 109.105.116.$1 push $TEST_LIB_PATH/*test* $PATH_GPU_TEST
+
+adb -H 109.105.116.$1 push $ANDROID_TOP/$ENN_LIB_PATH/libenn*.so $PATH_GPU_TEST
+adb -H 109.105.116.$1 push $ANDROID_TOP/$GRAPHGEN_LIB_PATH/*.so $PATH_GPU_TEST
+adb -H 109.105.116.$1 push $ANDROID_TOP/$GPU_DRIVER_SO_PATH/neuralnetworks_gpu_sl_driver_prebuilt.so $PATH_GPU_TEST
+adb -H 109.105.116.$1 push $ANDROID_TOP/$GPU_RIVER_SERVICE_PATH/android.hardware.neuralnetworks-shim-service-gpu $PATH_GPU_TEST
+
+
+#adb -H 109.105.116.$1 push $ANDROID_TOP/out/target/product/$TARGET_NAME/vendor/bin/EnnTest_v2*  $PATH_GPU_TEST
+#adb -H 109.105.116.$1 push $ANDROID_TOP/out/target/product/$TARGET_NAME/vendor/bin/hw/vendor.samsung_slsi.hardware.enn@1.0-service $PATH_GPU_TEST
+#adb -H 109.105.116.$1 push $ANDROID_TOP/out/target/product/$TARGET_NAME/vendor/lib64/vendor.samsung_slsi.hardware.enn@1.0.so $PATH_GPU_TEST
+#adb -H 109.105.116.$1 push $ANDROID_TOP/vendor/samsung_slsi/exynos/enn/source/src/medium/hidl/enn/1.0/manifest_enn.xml /vendor/etc/vintf/
+
+#  adb56 push /data/luxin/luxin/UENN_S/0601_000/origin-model/input/inceptionv3-a1_3x3_1-ImageNet-OnlyInputLayer-v2.nnc /data/vendor/enn/models
+
+#adb -H 109.105.116.$1 shell sync
+#adb -H 109.105.116.$1 shell "chmod 777 /vendor/bin/enn*"
+#adb -H 109.105.116.$1 shell "chmod 777 /vendor/bin/hw/vendor.samsung_slsi.hardware.enn@1.0-service"
+http://10.166.101.43:81/#/c/685719/
+Can merge now
+[GPU UD]fix VTS of SOFTMAX
+Needs Code-Review
+http://10.166.101.43:81/#/c/685719/
+1111111111111111
+1111111111111111
+
+Hi JISEONG
+Sorry that i'm debuging softmax this morning
+
+Gather
+It seems that the gather still gets wrong input and wrong input order.
+1.As wrong input like case gather_higher_rank_quant8_all_inputs_as_internal:
+>input dim 1 3 2 1
+> scale  0.500000 ZeroPoint 127 getDataType 4
+>path /data/local/tmp/zhanglt_test/eden/1_3_2_1.txt
+> 2 0 0 0 0 0
+which shall be {129, 131, 133, 135, 137, 139}.
+
+>input dim 3 2 1 1
+> scale  1.000000 ZeroPoint 0 getDataType 2
+>path /data/local/tmp/zhanglt_test/eden/3_2_1_1.txt
+> -2021293183       35721           0           0           0           0
+which it shall be like:{2, 0, 1, 0, 0, 1}
+The problem of wrong input order or wrong input may due to saidl driver......
+
+Mean
+mean also gets wrong input :(
+>input dim 1 1 1 1
+> scale  1.000000 ZeroPoint 0 getDataType 2
+>path /data/local/tmp/zhanglt_test/eden/1_1_1_1.txt
+> 1065353216
+above is the axis, which should be 2
+
+
+
+
+
+
+
+
+
+2.As wrong input order like case gather_higher_rank_all_inputs_as_internal:
+
+TEST_F(ENN_GT_UNIT_TEST_GPU_UD, gpu_ud_test_fully_connected) {
+    ud::gpu::GpuUserDriver &gpu_ud = ud::gpu::GpuUserDriver::get_instance();
+
+    gpu_ud.Initialize();
+    enn::model::component::OperatorBuilder operator_builder;
+
+    NDims input_dims = {2, 10, 1, 1};
+    NDims output_dims = {2, 3, 1, 1};
+    NDims weight_dims = {3, 10, 1, 1};
+    NDims bias_dims = {3, 1, 1, 1};
+
+    // Make parameter
+    float input_data[] = {
+        1, 2, 3, 4, 5, 6, 7, 8, -9, -10, 1, 2, 3, 4, 5, 6, 7, -8, 9, -10,
+    };
+    float weight_data[] = {
+        1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
+    };
+    float bias_data[] = {1, 2, 3};
+    float expect_data[] = {24, 25, 26, 58, 59, 60};
+    float error_threshold = 0.17;
+    Dim2 stride = {1, 1};
+    Dim2 dilation = {1, 1};
+
+    auto ifm =
+        create_feature_map(feature_map_builder, std::string("Tensor_000[1]"), 0,
+                           input_dims, TFlite::TensorType_FLOAT32);
+    auto ofm =
+        create_feature_map(feature_map_builder, std::string("Tensor_000[2]"), 1,
+                           output_dims, TFlite::TensorType_FLOAT32);
+
+    auto param_kernel =
+        create_parameter(parameter_builder, "Kernel", weight_data, weight_dims,TFlite::TensorType_FLOAT32);
+    auto param_bias = create_parameter(parameter_builder, "Bias", bias_data,
+                                       bias_dims, TFlite::TensorType_FLOAT32);
+
+    flatbuffers::FlatBufferBuilder build_data;
+    TFlite::ActivationFunctionType activation = TFlite::ActivationFunctionType::ActivationFunctionType_RELU;
+    TFlite::Padding padding = TFlite::Padding::Padding_SAME;
+
+    auto tmp = TFlite::CreateFullyConnectedOptions(build_data, activation);
+    build_data.Finish(tmp);
+    void *base_addr =
+        build_data.GetBufferPointer() +
+        (flatbuffers::EndianScalar(*reinterpret_cast<flatbuffers::uoffset_t *>(build_data.GetBufferPointer())));
+    std::shared_ptr<enn::model::component::Operator> op =
+        operator_builder.set_id(0)
+            .set_name(TFlite::EnumNameBuiltinOperator(TFlite::BuiltinOperator_FULLY_CONNECTED))
+            .set_code(TFlite::BuiltinOperator_FULLY_CONNECTED)
+            .set_accelerator(model::Accelerator::GPU)
+            .add_in_tensor(ifm)
+            .add_in_tensor(param_kernel)
+            .add_in_tensor(param_bias)
+            .add_out_tensor(ofm)
+            .set_option(TFlite::EnumNameBuiltinOptions(TFlite::BuiltinOptions_FullyConnectedOptions),
+                        base_addr,
+                        build_data.GetSize(),
+                        TFlite::BuiltinOptions_FullyConnectedOptions)
+            .create();
+    // Make OperatorList
+    auto attribute = std::make_shared<enn::model::Attribute>(TFlite::LegacyModel_TENSORFLOW, false);
+    auto op_list = operator_list_builder.build(MODEL_ID).add_operator(op).set_attribute(attribute).create();
+    gpu_ud.OpenSubGraph(*op_list);
+
+    // Make BufferTable
+    model::memory::BufferTable buffer_table;
+
+    auto in_mem =
+        emm->CreateMemory(data_size[TFlite::TensorType_FLOAT32] * GetDimSize(input_dims), enn::EnnMmType::kEnnMmTypeIon);
+    auto out_mem =
+        emm->CreateMemory(data_size[TFlite::TensorType_FLOAT32] * GetDimSize(output_dims), enn::EnnMmType::kEnnMmTypeIon);
+
+    CHECK_AND_RETURN_VOID(is_invalid_memory(gpu_ud, *op_list, {in_mem, out_mem}), "CreateMemory() failed");
+
+    in_mem->va = static_cast<void *>(input_data);
+    buffer_table.add(0, in_mem->va, in_mem->size);
+    buffer_table.add(1, out_mem->va, out_mem->size);
+
+    // Prepare & Execute
+    auto executable_operator_list = std::make_shared<runtime::ExecutableOperatorList>(
+        MODEL_ID, op_list, std::make_shared<model::memory::BufferTable>(buffer_table));
+    EXPECT_EQ(gpu_ud.PrepareSubGraph(*executable_operator_list), ENN_RET_SUCCESS);
+
+    auto operator_list_execute_request = runtime::OperatorListExecuteRequest(executable_operator_list);
+    EXPECT_EQ(gpu_ud.ExecuteSubGraph(operator_list_execute_request), ENN_RET_SUCCESS);
+    compare((float *)out_mem->va, expect_data, GetDimSize(output_dims), error_threshold);
+
+    emm->DeleteMemory(in_mem);
+    emm->DeleteMemory(out_mem);
+    gpu_ud.CloseSubGraph(*op_list);
+
+    gpu_ud.Deinitialize();
+}
+#################################################
+template <>
+EnnReturn OperationConstructor::create_ud_operator<TFlite::BuiltinOperator::BuiltinOperator_FULLY_CONNECTED>(
+    const std::shared_ptr<model::component::Operator> &operator_) {
+    ENN_DBG_PRINT("TFlite::BuiltinOperator::BuiltinOperator_FULLY_CONNECTED opr->code = %d is called\n",
+                  operator_->get_code());
+    std::string builtin_op_name = TFlite::EnumNameBuiltinOperator(operator_->get_code());
+    CHECK_AND_RETURN_ERR(
+        0 != builtin_op_name.compare(operator_->get_name()), ENN_RET_FAILED, "Invalid BuiltinOperator : %s\n", builtin_op_name.c_str());
+
+    std::shared_ptr<FullyConnectedParameters> parameters = std::make_shared<FullyConnectedParameters>();
+    std::vector<std::shared_ptr<ITensor>> in_tensors, out_tensors, data_tensors;
+
+    CHECK_AND_RETURN_ERR(0 >= operator_->out_tensors.count(), ENN_RET_FAILED, "1<= operator_->out_tensors.count()\n");
+    PrecisionType precision = PrecisionType::FP16;
+    std::shared_ptr<model::component::FeatureMap> ofm =
+        std::static_pointer_cast<model::component::FeatureMap>(operator_->out_tensors[0]);
+    precision = get_precision((TFlite::TensorType)ofm->get_data_type());
+
+    convert_to_tensors(operator_, precision, in_tensors, out_tensors, data_tensors);
+
+    CHECK_AND_RETURN_ERR(
+        nullptr == operator_->get_option().get_addr(), ENN_RET_FAILED, "operator_->get_option().get_addr() == nullptr\n");
+
+    const TFlite::FullyConnectedOptions *tflOptions =
+        reinterpret_cast<const TFlite::FullyConnectedOptions *>(operator_->get_option().get_addr());
+    parameters->weights_as_input = false;
+    parameters->androidNN = false;
+    parameters->is_delegate = true;
+    parameters->storage_type = StorageType::BUFFER;
+    parameters->activation_info = std::make_shared<ActivationInfo>(
+        static_cast<ActivationInfo::ActivationType>(tflOptions->fused_activation_function()), true);
+
+    std::shared_ptr<CLFullyConnected> fully_connected = compute_library_->createFullyConnected(precision);
+    CHECK_AND_RETURN_ERR(Status::SUCCESS != fully_connected->initialize(in_tensors, out_tensors, parameters),
+                         ENN_RET_FAILED,
+                         "CLFullyConnected initialize is failed\n");
+
+    operators->push_back(std::make_shared<EnnUDOperator<CLFullyConnected>>(
+        operator_->get_name(), operator_->get_id(), in_tensors, out_tensors, data_tensors, fully_connected));
+
+    return ENN_RET_SUCCESS;
+}
+
+
+
+Needs Code-Review
+http://10.166.101.43:81/#/c/679503/
+
+
+
+
+git fetch ssh://lt.zhang@10.166.101.43:29418/platform/vendor/samsung_slsi/exynos/enn/source refs/changes/20/680320/1 && git checkout FETCH_HEAD
+
+
+
+While we rename the vendor/samsung_slsi/exynos/enn/Android.bp file as this error follows here:
+ 
+error: vendor/samsung_slsi/exynos/enn/source/src/Android.bp:614:1: module "prebuilt_libenn_fw_graph_parser" already defined
+       vendor/samsung_slsi/exynos/enn/Android.bp:349:1 <-- previous definition here
+
+we got some new errors below when executing mm -j16: 
+
+error: vendor/samsung_slsi/exynos/enn_saidl_driver/Android.bp:120:1: dependency "libenn_common_utils" of "neuralnetworks_npu_sl_driver" missing variant:
+  os:android,image:,arch:arm64_armv8-2a_cortex-a76,sdk:,link:shared
+available variants:
+  os:android,image:vendor.31,arch:arm64_armv8-2a_cortex-a76 (alias to os:android,image:vendor.31,arch:arm64_armv8-2a_cortex-a76,sdk:,link:shared,version:)
+  os:android,image:vendor.31,arch:arm64_armv8-2a_cortex-a76,sdk: (alias to os:android,image:vendor.31,arch:arm64_armv8-2a_cortex-a76,sdk:,link:shared,version:)
+  os:android,image:vendor.31,arch:arm64_armv8-2a_cortex-a76,sdk:,link:shared (alias to os:android,image:vendor.31,arch:arm64_armv8-2a_cortex-a76,sdk:,link:shared,version:)
+  os:android,image:vendor.31,arch:arm64_armv8-2a_cortex-a76,sdk:,link:shared,version:
+  os:android,image:vendor.31,arch:arm64_armv8-2a_cortex-a76,sdk:,link:shared,version:latest (alias to os:android,image:vendor.31,arch:arm64_armv8-2a_cortex-a76,sdk:,link:shared,version:)
+  os:android,image:vendor.31,arch:arm_armv8-a_cortex-a76 (alias to os:android,image:vendor.31,arch:arm_armv8-a_cortex-a76,sdk:,link:shared,version:)
+  os:android,image:vendor.31,arch:arm_armv8-a_cortex-a76,sdk: (alias to os:android,image:vendor.31,arch:arm_armv8-a_cortex-a76,sdk:,link:shared,version:)
+  os:android,image:vendor.31,arch:arm_armv8-a_cortex-a76,sdk:,link:shared (alias to os:android,image:vendor.31,arch:arm_armv8-a_cortex-a76,sdk:,link:shared,version:)
+  os:android,image:vendor.31,arch:arm_armv8-a_cortex-a76,sdk:,link:shared,version:
+  os:android,image:vendor.31,arch:arm_armv8-a_cortex-a76,sdk:,link:shared,version:latest (alias to os:android,image:vendor.31,arch:arm_armv8-a_cortex-a76,sdk:,link:shared,version:)
+
+error: vendor/samsung_slsi/exynos/enn_saidl_driver/Android.bp:120:1: dependency "libenn_engine_lib" of "neuralnetworks_npu_sl_driver" missing variant:
+  os:android,image:,arch:arm64_armv8-2a_cortex-a76,sdk:,link:shared
+available variants:
+  os:android,image:vendor.31,arch:arm64_armv8-2a_cortex-a76 (alias to os:android,image:vendor.31,arch:arm64_armv8-2a_cortex-a76,sdk:,link:shared,version:)
+  os:android,image:vendor.31,arch:arm64_armv8-2a_cortex-a76,sdk: (alias to os:android,image:vendor.31,arch:arm64_armv8-2a_cortex-a76,sdk:,link:shared,version:)
+  os:android,image:vendor.31,arch:arm64_armv8-2a_cortex-a76,sdk:,link:shared (alias to os:android,image:vendor.31,arch:arm64_armv8-2a_cortex-a76,sdk:,link:shared,version:)
+  os:android,image:vendor.31,arch:arm64_armv8-2a_cortex-a76,sdk:,link:shared,version:
+  os:android,image:vendor.31,arch:arm64_armv8-2a_cortex-a76,sdk:,link:shared,version:latest (alias to os:android,image:vendor.31,arch:arm64_armv8-2a_cortex-a76,sdk:,link:shared,version:)
+  os:android,image:vendor.31,arch:arm_armv8-a_cortex-a76 (alias to os:android,image:vendor.31,arch:arm_armv8-a_cortex-a76,sdk:,link:shared,version:)
+  os:android,image:vendor.31,arch:arm_armv8-a_cortex-a76,sdk: (alias to os:android,image:vendor.31,arch:arm_armv8-a_cortex-a76,sdk:,link:shared,version:)
+  os:android,image:vendor.31,arch:arm_armv8-a_cortex-a76,sdk:,link:shared (alias to os:android,image:vendor.31,arch:arm_armv8-a_cortex-a76,sdk:,link:shared,version:)
+  os:android,image:vendor.31,arch:arm_armv8-a_cortex-a76,sdk:,link:shared,version:
+  os:android,image:vendor.31,arch:arm_armv8-a_cortex-a76,sdk:,link:shared,version:latest (alias to os:android,image:vendor.31,arch:arm_armv8-a_cortex-a76,sdk:,link:shared,version:)
+[and 16 more]
+
+enn                                                                        
+├─ lib                                                                     
+│  ├─ libenn_common_utils.so                                               
+│  ├─ libenn_engine.so                                                     
+│  ├─ libenn_engine_lib.so                                                 
+│  ├─ libenn_fw_graph_parser.so                                            
+│  ├─ libenn_jsoncpp.so                                                    
+│  ├─ libenn_model.so                                                      
+│  ├─ libenn_preset_config.so                                              
+│  ├─ libenn_profiler.so                                                   
+│  ├─ libenn_public_api_cpp.so                                             
+│  ├─ libenn_public_api_cpp_lib.so                                         
+│  ├─ libenn_user.so                                                       
+│  ├─ libenn_user_driver_cpu.so                                            
+│  ├─ libenn_user_driver_gpu.so                                            
+│  ├─ libenn_user_driver_unified.so                                        
+│  └─ libenn_user_lib.so                                                   
+├─ lib64                                                                   
+│  ├─ libenn_common_utils.so                                               
+│  ├─ libenn_engine.so                                                     
+│  ├─ libenn_engine_lib.so                                                 
+│  ├─ libenn_fw_graph_parser.so                                            
+│  ├─ libenn_jsoncpp.so                                                    
+│  ├─ libenn_model.so                                                      
+│  ├─ libenn_preset_config.so                                              
+│  ├─ libenn_profiler.so                                                   
+│  ├─ libenn_public_api_cpp.so                                             
+│  ├─ libenn_public_api_cpp_lib.so                                         
+│  ├─ libenn_user.so                                                       
+│  ├─ libenn_user_driver_cpu.so                                            
+│  ├─ libenn_user_driver_gpu.so                                            
+│  ├─ libenn_user_driver_unified.so                                        
+│  └─ libenn_user_lib.so                                                   
+├─ source                                                                  
+│  ├─ doc                                                                  
+│  │  ├─ materials                                                         
+│  │  │  ├─ 20201222_block_diagram.bmp                                     
+│  │  │  ├─ 20201222_block_diagram.odg                                     
+│  │  │  ├─ 20210119_tl_displayer.jpeg                                     
+│  │  │  ├─ 20210129_block_diagram.odg                                     
+│  │  │  ├─ 20210129_block_diagram.png                                     
+│  │  │  ├─ 20210129_block_diagram.svg                                     
+│  │  │  └─ 20210218_block_diagram.odg                                     
+│  │  ├─ Object Diagram.md                                                 
+│  │  ├─ SequenceDiagram.md                                                
+│  │  ├─ base_ver_description.md                                           
+│  │  ├─ medium_interface.md                                               
+│  │  ├─ memory commit and management.md                                   
+│  │  ├─ memory_manager.md                                                 
+│  │  └─ preferences.md                                                    
+│  ├─ materials                                                            
+│  │  ├─ models                                                            
+│  │  │  ├─ olympus                                                        
+│  │  │  │  └─ NPU_IV3                                                     
+│  │  │  │     ├─ NCP                                                      
+│  │  │  │     │  ├─ input.bin                                             
+│  │  │  │     │  ├─ ncp.bin                                               
+│  │  │  │     │  └─ output_golden.bin                                     
+│  │  │  │     ├─ NPU_INCEPTIONV3.nnc                                      
+│  │  │  │     ├─ NPU_INCEPTIONV3_golden_data.bin                          
+│  │  │  │     └─ NPU_INCEPTIONV3_input_data.bin                           
+│  │  │  └─ pamir                                                          
+│  │  │     ├─ CGO                                                         
+│  │  │     │  ├─ DSP_INCEPTIONV3.cgo                                      
+│  │  │     │  └─ gaussian3x3_9925.cgo                                     
+│  │  │     ├─ DLV3                                                        
+│  │  │     │  ├─ NPU_MV2_Deeplab_V3_plus_MLPerf_tflite.nnc                
+│  │  │     │  ├─ NPU_MV2_Deeplab_V3_plus_MLPerf_tflite_Q_golden_data.bin  
+│  │  │     │  └─ NPU_MV2_Deeplab_V3_plus_MLPerf_tflite_input_data.bin     
+│  │  │     ├─ DSP_IV3                                                     
+│  │  │     │  ├─ ucgo                                                     
+│  │  │     │  │  ├─ classifier_shuffled_out.bin                           
+│  │  │     │  │  ├─ conv1_3x3_s2_shuffled_in.bin                          
+│  │  │     │  │  └─ dsp_iv3_pamir.ucgo                                    
+│  │  │     │  ├─ DSP_INCEPTIONV3_PAMIR_EVT0.nnc                           
+│  │  │     │  ├─ DSP_INCEPTIONV3_PAMIR_EVT0_golden_data.bin               
+│  │  │     │  └─ DSP_INCEPTIONV3_PAMIR_EVT0_input_data.bin                
+│  │  │     ├─ EdgeTPU                                                     
+│  │  │     │  ├─ NCP                                                      
+│  │  │     │  │  ├─ input.bin                                             
+│  │  │     │  │  └─ output_golden.bin                                     
+│  │  │     │  ├─ NPU_mobilenet_edgetpu_tflite.nnc                         
+│  │  │     │  ├─ NPU_mobilenet_edgetpu_tflite_golden_data.bin             
+│  │  │     │  └─ NPU_mobilenet_edgetpu_tflite_input_data.bin              
+│  │  │     ├─ GPU_IV3                                                     
+│  │  │     │  ├─ GPU_InceptionV3.html                                     
+│  │  │     │  ├─ GPU_InceptionV3.nnc                                      
+│  │  │     │  ├─ GPU_InceptionV3_golden_data.bin                          
+│  │  │     │  └─ GPU_InceptionV3_input_data.bin                           
+│  │  │     ├─ GPU_operators                                               
+│  │  │     │  ├─ add_v1_2.nnc                                             
+│  │  │     │  └─ conv_float.nnc                                           
+│  │  │     ├─ Mobiledet_SSD                                               
+│  │  │     │  ├─ Mobiledet_SSD_tflite_O0_hw_cfu.nnc                       
+│  │  │     │  ├─ Mobiledet_SSD_tflite_O0_sw_cfu.nnc                       
+│  │  │     │  ├─ Mobiledet_SSD_tflite_O1_hw_cfu.nnc                       
+│  │  │     │  ├─ Mobiledet_SSD_tflite_O1_sw_cfu.nnc                       
+│  │  │     │  ├─ NPU_Mobiledet_SSD_tflite.nnc                             
+│  │  │     │  ├─ NPU_Mobiledet_SSD_tflite_golden_data.bin                 
+│  │  │     │  └─ NPU_Mobiledet_SSD_tflite_input_data.bin                  
+│  │  │     ├─ NPU_IV3                                                     
+│  │  │     │  ├─ NCP                                                      
+│  │  │     │  │  ├─ input.bin                                             
+│  │  │     │  │  ├─ ncp.bin                                               
+│  │  │     │  │  └─ output_golden.bin                                     
+│  │  │     │  ├─ NPU_InceptionV3.nnc                                      
+│  │  │     │  ├─ NPU_InceptionV3_golden_data.bin                          
+│  │  │     │  └─ NPU_InceptionV3_input_data.bin                           
+│  │  │     └─ ObjectDetect                                                
+│  │  │        ├─ old                                                      
+│  │  │        │  ├─ OD_V2.1.6_QVGA_01_26_bankers_no_eltwise.nnc           
+│  │  │        │  └─ OD_V2.3.7_VGA_01_25_bankers_no_eltwise.nnc            
+│  │  │        ├─ OD_QVGA_RGB3P.nnc                                        
+│  │  │        ├─ OD_VGA_RGB3P.nnc                                         
+│  │  │        ├─ input_QVGA.bin                                           
+│  │  │        ├─ input_VGA.bin                                            
+│  │  │        ├─ out_QVGA_11.bin                                          
+│  │  │        ├─ out_QVGA_12.bin                                          
+│  │  │        ├─ out_QVGA_13.bin                                          
+│  │  │        ├─ out_QVGA_14.bin                                          
+│  │  │        ├─ out_QVGA_15.bin                                          
+│  │  │        ├─ out_QVGA_16.bin                                          
+│  │  │        ├─ out_QVGA_17.bin                                          
+│  │  │        ├─ out_QVGA_18.bin                                          
+│  │  │        ├─ out_QVGA_19.bin                                          
+│  │  │        ├─ out_QVGA_20.bin                                          
+│  │  │        ├─ out_VGA_13.bin                                           
+│  │  │        ├─ out_VGA_14.bin                                           
+│  │  │        ├─ out_VGA_15.bin                                           
+│  │  │        ├─ out_VGA_16.bin                                           
+│  │  │        ├─ out_VGA_17.bin                                           
+│  │  │        ├─ out_VGA_18.bin                                           
+│  │  │        ├─ out_VGA_19.bin                                           
+│  │  │        ├─ out_VGA_20.bin                                           
+│  │  │        ├─ out_VGA_21.bin                                           
+│  │  │        ├─ out_VGA_22.bin                                           
+│  │  │        ├─ out_VGA_23.bin                                           
+│  │  │        └─ out_VGA_24.bin                                           
+│  │  └─ push_materials.sh                                                 
+│  ├─ samples                                                              
+│  │  ├─ lib                                                               
+│  │  │  └─ libenn_public_api_cpp.so                                       
+│  │  ├─ lib64                                                             
+│  │  │  └─ libenn_public_api_cpp.so                                       
+│  │  ├─ sample_nnc                                                        
+│  │  │  ├─ NPU_IV3                                                        
+│  │  │  │  ├─ NCP                                                         
+│  │  │  │  │  ├─ input.bin                                                
+│  │  │  │  │  ├─ ncp.bin                                                  
+│  │  │  │  │  └─ output_golden.bin                                        
+│  │  │  │  ├─ NPU_InceptionV3.nnc                                         
+│  │  │  │  ├─ NPU_InceptionV3_golden_data.bin                             
+│  │  │  │  └─ NPU_InceptionV3_input_data.bin                              
+│  │  │  └─ ObjectDetect                                                   
+│  │  │     ├─ old                                                         
+│  │  │     │  ├─ OD_V2.1.6_QVGA_01_26_bankers_no_eltwise.nnc              
+│  │  │     │  └─ OD_V2.3.7_VGA_01_25_bankers_no_eltwise.nnc               
+│  │  │     ├─ OD_QVGA_RGB3P.nnc                                           
+│  │  │     ├─ OD_VGA_RGB3P.nnc                                            
+│  │  │     ├─ input_QVGA.bin                                              
+│  │  │     ├─ input_VGA.bin                                               
+│  │  │     ├─ out_QVGA_11.bin                                             
+│  │  │     ├─ out_QVGA_12.bin                                             
+│  │  │     ├─ out_QVGA_13.bin                                             
+│  │  │     ├─ out_QVGA_14.bin                                             
+│  │  │     ├─ out_QVGA_15.bin                                             
+│  │  │     ├─ out_QVGA_16.bin                                             
+│  │  │     ├─ out_QVGA_17.bin                                             
+│  │  │     ├─ out_QVGA_18.bin                                             
+│  │  │     ├─ out_QVGA_19.bin                                             
+│  │  │     ├─ out_QVGA_20.bin                                             
+│  │  │     ├─ out_VGA_13.bin                                              
+│  │  │     ├─ out_VGA_14.bin                                              
+│  │  │     ├─ out_VGA_15.bin                                              
+│  │  │     ├─ out_VGA_16.bin                                              
+│  │  │     ├─ out_VGA_17.bin                                              
+│  │  │     ├─ out_VGA_18.bin                                              
+│  │  │     ├─ out_VGA_19.bin                                              
+│  │  │     ├─ out_VGA_20.bin                                              
+│  │  │     ├─ out_VGA_21.bin                                              
+│  │  │     ├─ out_VGA_22.bin                                              
+│  │  │     ├─ out_VGA_23.bin                                              
+│  │  │     └─ out_VGA_24.bin                                              
+│  │  ├─ Android.bp.sample                                                 
+│  │  ├─ README.md                                                         
+│  │  ├─ enn_api-public.hpp                                                
+│  │  ├─ enn_api-type.h                                                    
+│  │  ├─ enn_sample.cc                                                     
+│  │  ├─ enn_sample_utils.hpp                                              
+│  │  ├─ push_and_test.sh                                                  
+│  │  └─ run_service.sh                                                    
+│  ├─ src                                                                  
+│  │  ├─ client                                                            
+│  │  │  ├─ CMakeLists.txt                                                 
+│  │  │  ├─ enn_api-async_test.cc                                          
+│  │  │  ├─ enn_api-public.cc                                              
+│  │  │  ├─ enn_api-public.h                                               
+│  │  │  ├─ enn_api-public.hpp                                             
+│  │  │  ├─ enn_api-type.h                                                 
+│  │  │  ├─ enn_api.cc                                                     
+│  │  │  ├─ enn_api.h                                                      
+│  │  │  ├─ enn_api_test.cc                                                
+│  │  │  ├─ enn_client_parser.hpp                                          
+│  │  │  ├─ enn_context_manager.cc                                         
+│  │  │  ├─ enn_context_manager.h                                          
+│  │  │  ├─ enn_model_container.hpp                                        
+│  │  │  └─ enn_model_container_test.cc                                    
+│  │  ├─ common                                                            
+│  │  │  ├─ CMakeLists.txt                                                 
+│  │  │  ├─ compiler.h                                                     
+│  │  │  ├─ enn_common_type.h                                              
+│  │  │  ├─ enn_debug.cc                                                   
+│  │  │  ├─ enn_debug.h                                                    
+│  │  │  ├─ enn_debug_test.cc                                              
+│  │  │  ├─ enn_debug_zone.h                                               
+│  │  │  ├─ enn_log.hpp                                                    
+│  │  │  ├─ enn_memory_allocator.h                                         
+│  │  │  ├─ enn_memory_allocator_device_buffer.cc                          
+│  │  │  ├─ enn_memory_allocator_device_buffer.h                           
+│  │  │  ├─ enn_memory_allocator_heap.cc                                   
+│  │  │  ├─ enn_memory_allocator_heap.h                                    
+│  │  │  ├─ enn_memory_manager-type.h                                      
+│  │  │  ├─ enn_memory_manager.cc                                          
+│  │  │  ├─ enn_memory_manager.h                                           
+│  │  │  ├─ enn_memory_manager_test.cc                                     
+│  │  │  ├─ enn_preference_generator.hpp                                   
+│  │  │  ├─ enn_preference_generator_test.cc                               
+│  │  │  ├─ enn_utils.cc                                                   
+│  │  │  ├─ enn_utils.h                                                    
+│  │  │  ├─ enn_utils_buffer.hpp                                           
+│  │  │  ├─ enn_utils_buffer_test.cc                                       
+│  │  │  ├─ enn_utils_test.cc                                              
+│  │  │  ├─ extended_type_traits.hpp                                       
+│  │  │  ├─ helper_templates.hpp                                           
+│  │  │  ├─ identifier.hpp                                                 
+│  │  │  ├─ identifier_base.hpp                                            
+│  │  │  ├─ identifier_chopper.hpp                                         
+│  │  │  ├─ identifier_decorator.hpp                                       
+│  │  │  ├─ ienn_memory_manager.hpp                                        
+│  │  │  └─ ref_hash_map.hpp                                               
+│  │  ├─ fw_parser                                                         
+│  │  │  ├─ lib                                                            
+│  │  │  │  └─ libenn_fw_graph_parser.so                                   
+│  │  │  └─ lib64                                                          
+│  │  │     └─ libenn_fw_graph_parser.so                                   
+│  │  ├─ medium                                                            
+│  │  │  ├─ hidl                                                           
+│  │  │  │  └─ enn                                                         
+│  │  │  │     ├─ 1.0                                                      
+│  │  │  │     │  ├─ default                                               
+│  │  │  │     │  │  ├─ EnnInterface.cpp                                   
+│  │  │  │     │  │  ├─ EnnInterface.h                                     
+│  │  │  │     │  │  └─ ServiceInterface.cc                                
+│  │  │  │     │  ├─ Android.bp                                            
+│  │  │  │     │  ├─ IEnnCallback.hal                                      
+│  │  │  │     │  ├─ IEnnInterface.hal                                     
+│  │  │  │     │  ├─ manifest_enn.xml                                      
+│  │  │  │     │  ├─ types.hal                                             
+│  │  │  │     │  └─ vendor.samsung_slsi.hardware.enn@1.0-service.xml      
+│  │  │  │     └─ update-makefiles.sh                                      
+│  │  │  ├─ README.md                                                      
+│  │  │  ├─ enn_client_manager.hpp                                         
+│  │  │  ├─ enn_client_manager_test.cc                                     
+│  │  │  ├─ enn_medium_interface.cc                                        
+│  │  │  ├─ enn_medium_interface.h                                         
+│  │  │  ├─ enn_medium_utils.hpp                                           
+│  │  │  ├─ types.hal.h                                                    
+│  │  │  └─ types.hal.hidl.h                                               
+│  │  ├─ model                                                             
+│  │  │  ├─ component                                                      
+│  │  │  │  ├─ operator                                                    
+│  │  │  │  │  ├─ data                                                     
+│  │  │  │  │  │  ├─ binary.hpp                                            
+│  │  │  │  │  │  ├─ data.hpp                                              
+│  │  │  │  │  │  └─ option.hpp                                            
+│  │  │  │  │  ├─ CMakeLists.txt                                           
+│  │  │  │  │  ├─ ioperator.hpp                                            
+│  │  │  │  │  ├─ ioperator_builder.hpp                                    
+│  │  │  │  │  ├─ operator.hpp                                             
+│  │  │  │  │  ├─ operator_builder.hpp                                     
+│  │  │  │  │  ├─ operator_list.hpp                                        
+│  │  │  │  │  ├─ operator_list_builder.hpp                                
+│  │  │  │  │  ├─ operator_list_test.cc                                    
+│  │  │  │  │  └─ operator_test.cc                                         
+│  │  │  │  └─ tensor                                                      
+│  │  │  │     ├─ CMakeLists.txt                                           
+│  │  │  │     ├─ feature_map.hpp                                          
+│  │  │  │     ├─ feature_map_builder.hpp                                  
+│  │  │  │     ├─ feature_map_test.cc                                      
+│  │  │  │     ├─ parameter.hpp                                            
+│  │  │  │     ├─ parameter_builder.hpp                                    
+│  │  │  │     ├─ parameter_test.cc                                        
+│  │  │  │     ├─ scalar.hpp                                               
+│  │  │  │     ├─ scalar_builder.hpp                                       
+│  │  │  │     ├─ scalar_test.cc                                           
+│  │  │  │     ├─ tensor.hpp                                               
+│  │  │  │     └─ tensor_builder.hpp                                       
+│  │  │  ├─ generator                                                      
+│  │  │  │  ├─ CMakeLists.txt                                              
+│  │  │  │  ├─ generator.cc                                                
+│  │  │  │  ├─ generator.hpp                                               
+│  │  │  │  └─ generator_test.cc                                           
+│  │  │  ├─ graph                                                          
+│  │  │  │  ├─ iterator                                                    
+│  │  │  │  │  ├─ methods                                                  
+│  │  │  │  │  │  ├─ breadth_first_search.hpp                              
+│  │  │  │  │  │  ├─ depth_first_search.hpp                                
+│  │  │  │  │  │  ├─ linear_search.hpp                                     
+│  │  │  │  │  │  └─ topological_sort.hpp                                  
+│  │  │  │  │  └─ iterator.hpp                                             
+│  │  │  │  ├─ CMakeLists.txt                                              
+│  │  │  │  ├─ graph.hpp                                                   
+│  │  │  │  └─ graph_test.cc                                               
+│  │  │  ├─ memory                                                         
+│  │  │  │  ├─ CMakeLists.txt                                              
+│  │  │  │  ├─ allocated_buffer.hpp                                        
+│  │  │  │  ├─ buffer.hpp                                                  
+│  │  │  │  ├─ buffer_table.hpp                                            
+│  │  │  │  ├─ buffer_test.cc                                              
+│  │  │  │  └─ indexed_buffer.hpp                                          
+│  │  │  ├─ meta_data                                                      
+│  │  │  │  └─ buffer_meta_data.hpp                                        
+│  │  │  ├─ parser                                                         
+│  │  │  │  ├─ cgo                                                         
+│  │  │  │  │  ├─ cgo_utils.hpp                                            
+│  │  │  │  │  └─ dsp_kernel_table.hpp                                     
+│  │  │  │  ├─ strategy                                                    
+│  │  │  │  │  ├─ cgo_parse_strategy.cc                                    
+│  │  │  │  │  ├─ cgo_parse_strategy.hpp                                   
+│  │  │  │  │  ├─ coded_parse_strategy.cc                                  
+│  │  │  │  │  ├─ coded_parse_strategy.hpp                                 
+│  │  │  │  │  ├─ nnc_parse_strategy.cc                                    
+│  │  │  │  │  ├─ nnc_parse_strategy.hpp                                   
+│  │  │  │  │  └─ strategy.hpp                                             
+│  │  │  │  ├─ CMakeLists.txt                                              
+│  │  │  │  ├─ parser.cc                                                   
+│  │  │  │  ├─ parser.hpp                                                  
+│  │  │  │  ├─ parser_test.cc                                              
+│  │  │  │  └─ parser_utils.hpp                                            
+│  │  │  ├─ pool                                                           
+│  │  │  │  └─ manager.cc                                                  
+│  │  │  ├─ raw                                                            
+│  │  │  │  ├─ data                                                        
+│  │  │  │  │  ├─ attribute.hpp                                            
+│  │  │  │  │  ├─ binary.hpp                                               
+│  │  │  │  │  ├─ buffer.hpp                                               
+│  │  │  │  │  ├─ control_option.hpp                                       
+│  │  │  │  │  ├─ dsp_options.hpp                                          
+│  │  │  │  │  ├─ graph_info.hpp                                           
+│  │  │  │  │  ├─ model_option.hpp                                         
+│  │  │  │  │  ├─ npu_options.hpp                                          
+│  │  │  │  │  ├─ operator.hpp                                             
+│  │  │  │  │  ├─ operator_options.hpp                                     
+│  │  │  │  │  ├─ region.hpp                                               
+│  │  │  │  │  ├─ scalar.hpp                                               
+│  │  │  │  │  └─ tensor.hpp                                               
+│  │  │  │  ├─ CMakeLists.txt                                              
+│  │  │  │  ├─ model.cc                                                    
+│  │  │  │  └─ model.hpp                                                   
+│  │  │  ├─ schema                                                         
+│  │  │  │  ├─ flatbuffers                                                 
+│  │  │  │  │  ├─ base.h                                                   
+│  │  │  │  │  ├─ flatbuffers.h                                            
+│  │  │  │  │  ├─ flexbuffers.h                                            
+│  │  │  │  │  ├─ stl_emulation.h                                          
+│  │  │  │  │  └─ util.h                                                   
+│  │  │  │  ├─ nnc                                                         
+│  │  │  │  │  ├─ v1                                                       
+│  │  │  │  │  │  ├─ compatibility.h                                       
+│  │  │  │  │  │  ├─ schema.fbs                                            
+│  │  │  │  │  │  └─ schema_generated.h                                    
+│  │  │  │  │  └─ v2                                                       
+│  │  │  │  │     ├─ schema.fbs                                            
+│  │  │  │  │     └─ schema_generated.h                                    
+│  │  │  │  ├─ schema_cgo.h                                                
+│  │  │  │  └─ schema_nnc.h                                                
+│  │  │  ├─ CMakeLists.txt                                                 
+│  │  │  ├─ attribute.hpp                                                  
+│  │  │  ├─ graph_types.hpp                                                
+│  │  │  ├─ model.hpp                                                      
+│  │  │  ├─ model_test.cc                                                  
+│  │  │  └─ types.hpp                                                      
+│  │  ├─ preset                                                            
+│  │  │  ├─ jsoncpp                                                        
+│  │  │  │  ├─ json                                                        
+│  │  │  │  │  ├─ json-forwards.h                                          
+│  │  │  │  │  └─ json.h                                                   
+│  │  │  │  └─ jsoncpp.cpp                                                 
+│  │  │  ├─ preset_config.cc                                               
+│  │  │  ├─ preset_config.hpp                                              
+│  │  │  └─ preset_config_test.cc                                          
+│  │  ├─ runtime                                                           
+│  │  │  ├─ client_process                                                 
+│  │  │  │  ├─ CMakeLists.txt                                              
+│  │  │  │  ├─ client_process.hpp                                          
+│  │  │  │  └─ client_process_test.cc                                      
+│  │  │  ├─ dispatch                                                       
+│  │  │  │  ├─ close_dispatcher.hpp                                        
+│  │  │  │  ├─ dispatchable.hpp                                            
+│  │  │  │  ├─ dispatcher_interface.hpp                                    
+│  │  │  │  ├─ execute_dispatcher.hpp                                      
+│  │  │  │  ├─ open_dispatcher.hpp                                         
+│  │  │  │  ├─ prepare_dispatcher.hpp                                      
+│  │  │  │  └─ session_id_query_dispatcher.hpp                             
+│  │  │  ├─ executable_model                                               
+│  │  │  │  ├─ CMakeLists.txt                                              
+│  │  │  │  ├─ executable_model.hpp                                        
+│  │  │  │  ├─ executable_model_test.cc                                    
+│  │  │  │  ├─ executable_operator_list.hpp                                
+│  │  │  │  ├─ executable_operator_list_test.cc                            
+│  │  │  │  └─ executable_oplist_session_info.hpp                          
+│  │  │  ├─ execute_request                                                
+│  │  │  │  ├─ CMakeLists.txt                                              
+│  │  │  │  ├─ execute_request.hpp                                         
+│  │  │  │  ├─ execute_request_test.cc                                     
+│  │  │  │  └─ operator_list_execute_request.hpp                           
+│  │  │  ├─ pool                                                           
+│  │  │  │  ├─ CMakeLists.txt                                              
+│  │  │  │  ├─ concurrent_pool.hpp                                         
+│  │  │  │  ├─ manager.cc                                                  
+│  │  │  │  ├─ manager.hpp                                                 
+│  │  │  │  ├─ pool_manager_test.cc                                        
+│  │  │  │  └─ poolable.hpp                                                
+│  │  │  ├─ scheduler                                                      
+│  │  │  │  ├─ CMakeLists.txt                                              
+│  │  │  │  ├─ static_scheduler.hpp                                        
+│  │  │  │  └─ static_scheduler_test.cc                                    
+│  │  │  ├─ CMakeLists.txt                                                 
+│  │  │  ├─ engine.cc                                                      
+│  │  │  ├─ engine.hpp                                                     
+│  │  │  ├─ engine_test.cc                                                 
+│  │  │  └─ userdriver_manager.hpp                                         
+│  │  ├─ test                                                              
+│  │  │  ├─ internal                                                       
+│  │  │  │  ├─ unit                                                        
+│  │  │  │  │  └─ enn_gtest_internal_unittest_main.cc                      
+│  │  │  │  ├─ enn_test_driver_debug_utils.h                               
+│  │  │  │  └─ enn_test_driver_model_container.h                           
+│  │  │  └─ materials.h                                                    
+│  │  ├─ tool                                                              
+│  │  │  ├─ dumper                                                         
+│  │  │  │  ├─ frequency_dumper.hpp                                        
+│  │  │  │  ├─ frequency_table.hpp                                         
+│  │  │  │  ├─ utilization_dumper.hpp                                      
+│  │  │  │  └─ utilization_table.hpp                                       
+│  │  │  ├─ pamir_fw_parser                                                
+│  │  │  │  └─ ofi_orca_fw_graph_parser.h                                  
+│  │  │  └─ profiler                                                       
+│  │  │     ├─ include                                                     
+│  │  │     │  ├─ ExynosNnProfiler.h                                       
+│  │  │     │  ├─ ExynosNnProfiler.hpp                                     
+│  │  │     │  ├─ ExynosNnProfilerApi.h                                    
+│  │  │     │  ├─ ExynosNnProfilerConfig.h                                 
+│  │  │     │  ├─ ProfileData.hpp                                          
+│  │  │     │  ├─ ProfileDataQueue.hpp                                     
+│  │  │     │  ├─ ProfileTreeNode.hpp                                      
+│  │  │     │  ├─ ProfileWatcher.hpp                                       
+│  │  │     │  └─ ProfilerLog.h                                            
+│  │  │     ├─ ExynosNnProfiler.cpp                                        
+│  │  │     ├─ ProfileData.cpp                                             
+│  │  │     ├─ ProfileTreeNode.cpp                                         
+│  │  │     └─ ProfileWatcher.cpp                                          
+│  │  ├─ userdriver                                                        
+│  │  │  ├─ common                                                         
+│  │  │  │  ├─ eden_osal                                                   
+│  │  │  │  │  ├─ dmabuf.c                                                 
+│  │  │  │  │  ├─ dmabuf.h                                                 
+│  │  │  │  │  ├─ eden_memory.c                                            
+│  │  │  │  │  ├─ eden_memory.h                                            
+│  │  │  │  │  ├─ ion.c                                                    
+│  │  │  │  │  ├─ ion.h                                                    
+│  │  │  │  │  ├─ ion_uapi.h                                               
+│  │  │  │  │  ├─ log.h                                                    
+│  │  │  │  │  ├─ os_mutex.c                                               
+│  │  │  │  │  ├─ os_mutex.h                                               
+│  │  │  │  │  ├─ osal.h                                                   
+│  │  │  │  │  └─ osal_types.h                                             
+│  │  │  │  ├─ op_test                                                     
+│  │  │  │  │  ├─ test_capabilities.h                                      
+│  │  │  │  │  └─ test_utils.h                                             
+│  │  │  │  ├─ operator_interfaces                                         
+│  │  │  │  │  ├─ common                                                   
+│  │  │  │  │  │  ├─ ActivationInfo.hpp                                    
+│  │  │  │  │  │  ├─ Common.hpp                                            
+│  │  │  │  │  │  ├─ Debug.hpp                                             
+│  │  │  │  │  │  ├─ Error.hpp                                             
+│  │  │  │  │  │  └─ Includes.hpp                                          
+│  │  │  │  │  ├─ interfaces                                               
+│  │  │  │  │  │  ├─ operators                                             
+│  │  │  │  │  │  │  ├─ IArgMax.hpp                                        
+│  │  │  │  │  │  │  ├─ IArgMin.hpp                                        
+│  │  │  │  │  │  │  ├─ IAsymmDequantization.hpp                           
+│  │  │  │  │  │  │  ├─ IAsymmQuantization.hpp                             
+│  │  │  │  │  │  │  ├─ ICFUConverter.hpp                                  
+│  │  │  │  │  │  │  ├─ ICFUInverter.hpp                                   
+│  │  │  │  │  │  │  ├─ IConcat.hpp                                        
+│  │  │  │  │  │  │  ├─ IDequantization.hpp                                
+│  │  │  │  │  │  │  ├─ IDetection.hpp                                     
+│  │  │  │  │  │  │  ├─ INormalQuantization.hpp                            
+│  │  │  │  │  │  │  ├─ INormalization.hpp                                 
+│  │  │  │  │  │  │  ├─ IPad.hpp                                           
+│  │  │  │  │  │  │  ├─ IQuantization.hpp                                  
+│  │  │  │  │  │  │  ├─ ISigDet.hpp                                        
+│  │  │  │  │  │  │  └─ ISoftmax.hpp                                       
+│  │  │  │  │  │  ├─ IComputeLibrary.h                                     
+│  │  │  │  │  │  └─ ITensor.hpp                                           
+│  │  │  │  │  ├─ OperatorInterfaces.h                                     
+│  │  │  │  │  ├─ custom_operator.h                                        
+│  │  │  │  │  └─ userdriver_operator.h                                    
+│  │  │  │  ├─ IOperationConstructor.h                                     
+│  │  │  │  ├─ IOperationExecutor.h                                        
+│  │  │  │  ├─ UserDriver.h                                                
+│  │  │  │  └─ UserDriverTypes.h                                           
+│  │  │  ├─ cpu                                                            
+│  │  │  │  ├─ common                                                      
+│  │  │  │  │  ├─ NEONComputeLibrary.cpp                                   
+│  │  │  │  │  ├─ NEONComputeLibrary.h                                     
+│  │  │  │  │  ├─ NEONIncludes.hpp                                         
+│  │  │  │  │  ├─ NEONMathFun.hpp                                          
+│  │  │  │  │  ├─ NEONOperators.hpp                                        
+│  │  │  │  │  └─ NEONTensor.hpp                                           
+│  │  │  │  ├─ op_test                                                     
+│  │  │  │  │  ├─ ArgMax_test.cpp                                          
+│  │  │  │  │  ├─ ArgMin_test.cpp                                          
+│  │  │  │  │  ├─ AsymmDequantization_test.cpp                             
+│  │  │  │  │  ├─ AsymmQuantization_test.cpp                               
+│  │  │  │  │  ├─ CFUInverter_test.cpp                                     
+│  │  │  │  │  ├─ CMakeLists.base                                          
+│  │  │  │  │  ├─ CMakeLists.txt                                           
+│  │  │  │  │  ├─ Concat_test.cpp                                          
+│  │  │  │  │  ├─ Detection_batch_single_test.cpp                          
+│  │  │  │  │  ├─ Detection_test.cpp                                       
+│  │  │  │  │  ├─ NEONCFUConverter_test.cpp                                
+│  │  │  │  │  ├─ NEONDequantization_test.cpp                              
+│  │  │  │  │  ├─ NEONNormalQuantization_test.cpp                          
+│  │  │  │  │  ├─ NEONSigDet_test.cpp                                      
+│  │  │  │  │  ├─ Normalization_test.cpp                                   
+│  │  │  │  │  ├─ Pad_test.cpp                                             
+│  │  │  │  │  ├─ Quantization_test.cpp                                    
+│  │  │  │  │  ├─ Readme.md                                                
+│  │  │  │  │  ├─ Softmax_test.cpp                                         
+│  │  │  │  │  └─ cpu_op_test.py                                           
+│  │  │  │  ├─ operators                                                   
+│  │  │  │  │  ├─ neon_impl                                                
+│  │  │  │  │  │  ├─ BboxUtil.cpp                                          
+│  │  │  │  │  │  ├─ BboxUtil.hpp                                          
+│  │  │  │  │  │  ├─ BboxUtil_batch_single.cpp                             
+│  │  │  │  │  │  ├─ BboxUtil_batch_single.hpp                             
+│  │  │  │  │  │  ├─ CommonUtil.hpp                                        
+│  │  │  │  │  │  ├─ DetectionOutput.cpp                                   
+│  │  │  │  │  │  ├─ DetectionOutput.hpp                                   
+│  │  │  │  │  │  ├─ NormalizedBbox.cpp                                    
+│  │  │  │  │  │  └─ NormalizedBbox.hpp                                    
+│  │  │  │  │  ├─ ArgMax.cpp                                               
+│  │  │  │  │  ├─ ArgMax.hpp                                               
+│  │  │  │  │  ├─ ArgMin.cpp                                               
+│  │  │  │  │  ├─ ArgMin.hpp                                               
+│  │  │  │  │  ├─ AsymmDequantization.cpp                                  
+│  │  │  │  │  ├─ AsymmDequantization.hpp                                  
+│  │  │  │  │  ├─ AsymmQuantization.cpp                                    
+│  │  │  │  │  ├─ AsymmQuantization.hpp                                    
+│  │  │  │  │  ├─ CFUInverter.cpp                                          
+│  │  │  │  │  ├─ CFUInverter.hpp                                          
+│  │  │  │  │  ├─ Concat.cpp                                               
+│  │  │  │  │  ├─ Concat.hpp                                               
+│  │  │  │  │  ├─ Detection.cpp                                            
+│  │  │  │  │  ├─ Detection.hpp                                            
+│  │  │  │  │  ├─ Detection_batch_single.cpp                               
+│  │  │  │  │  ├─ Detection_batch_single.hpp                               
+│  │  │  │  │  ├─ NEONCFUConverter.cpp                                     
+│  │  │  │  │  ├─ NEONCFUConverter.hpp                                     
+│  │  │  │  │  ├─ NEONDequantization.cpp                                   
+│  │  │  │  │  ├─ NEONDequantization.hpp                                   
+│  │  │  │  │  ├─ NEONNormalQuantization.cpp                               
+│  │  │  │  │  ├─ NEONNormalQuantization.hpp                               
+│  │  │  │  │  ├─ NEONSigDet.cpp                                           
+│  │  │  │  │  ├─ NEONSigDet.hpp                                           
+│  │  │  │  │  ├─ Normalization.cpp                                        
+│  │  │  │  │  ├─ Normalization.hpp                                        
+│  │  │  │  │  ├─ Pad.cpp                                                  
+│  │  │  │  │  ├─ Pad.hpp                                                  
+│  │  │  │  │  ├─ Quantization.cpp                                         
+│  │  │  │  │  ├─ Quantization.hpp                                         
+│  │  │  │  │  ├─ Softmax.cpp                                              
+│  │  │  │  │  └─ Softmax.hpp                                              
+│  │  │  │  ├─ CMakeLists.txt                                              
+│  │  │  │  ├─ cpu_op_constructor.cc                                       
+│  │  │  │  ├─ cpu_op_constructor.h                                        
+│  │  │  │  ├─ cpu_op_executor.cc                                          
+│  │  │  │  ├─ cpu_op_executor.h                                           
+│  │  │  │  ├─ cpu_userdriver.cc                                           
+│  │  │  │  ├─ cpu_userdriver.h                                            
+│  │  │  │  ├─ cpu_userdriver_test.cc                                      
+│  │  │  │  └─ readme.md                                                   
+│  │  │  ├─ gpu                                                            
+│  │  │  │  ├─ common                                                      
+│  │  │  │  │  ├─ CLBuffer.hpp                                             
+│  │  │  │  │  ├─ CLComputeLibrary.cpp                                     
+│  │  │  │  │  ├─ CLComputeLibrary.hpp                                     
+│  │  │  │  │  ├─ CLIncludes.hpp                                           
+│  │  │  │  │  ├─ CLKernels.hpp                                            
+│  │  │  │  │  ├─ CLOperators.hpp                                          
+│  │  │  │  │  ├─ CLParameter.hpp                                          
+│  │  │  │  │  ├─ CLPlatform.cpp                                           
+│  │  │  │  │  ├─ CLPlatform.hpp                                           
+│  │  │  │  │  ├─ CLRuntime.cpp                                            
+│  │  │  │  │  ├─ CLRuntime.hpp                                            
+│  │  │  │  │  ├─ CLTensor.cpp                                             
+│  │  │  │  │  └─ CLTensor.hpp                                             
+│  │  │  │  ├─ op_test                                                     
+│  │  │  │  │  ├─ CMakeLists.base                                          
+│  │  │  │  │  ├─ CMakeLists.txt                                           
+│  │  │  │  │  ├─ Readme.md                                                
+│  │  │  │  │  ├─ add_test.cpp                                             
+│  │  │  │  │  ├─ averagepool_test.cpp                                     
+│  │  │  │  │  ├─ bidirectional_sequence_lstm_test.cpp                     
+│  │  │  │  │  ├─ cast_test.cpp                                            
+│  │  │  │  │  ├─ concat_test.cpp                                          
+│  │  │  │  │  ├─ convolution_guard.h                                      
+│  │  │  │  │  ├─ convolution_test.cpp                                     
+│  │  │  │  │  ├─ deconv_guard.h                                           
+│  │  │  │  │  ├─ deconvolution_test.cpp                                   
+│  │  │  │  │  ├─ depth2space_test.cpp                                     
+│  │  │  │  │  ├─ depthwiseconvolution_test.cpp                            
+│  │  │  │  │  ├─ dequantization_test.cpp                                  
+│  │  │  │  │  ├─ div_test.cpp                                             
+│  │  │  │  │  ├─ fullyconnected_test.cpp                                  
+│  │  │  │  │  ├─ gather_test.cpp                                          
+│  │  │  │  │  ├─ gpu_op_test.py                                           
+│  │  │  │  │  ├─ maxpool_test.cpp                                         
+│  │  │  │  │  ├─ mean_test.cpp                                            
+│  │  │  │  │  ├─ mul_test.cpp                                             
+│  │  │  │  │  ├─ normalization_test.cpp                                   
+│  │  │  │  │  ├─ pad_test.cpp                                             
+│  │  │  │  │  ├─ quantization_test.cpp                                    
+│  │  │  │  │  ├─ reduce_test.cpp                                          
+│  │  │  │  │  ├─ relu1_test.cpp                                           
+│  │  │  │  │  ├─ relu6_test.cpp                                           
+│  │  │  │  │  ├─ relu_test.cpp                                            
+│  │  │  │  │  ├─ reshape_test.cpp                                         
+│  │  │  │  │  ├─ resize_bilinear_test.cpp                                 
+│  │  │  │  │  ├─ sigmoid_test.cpp                                         
+│  │  │  │  │  ├─ softmax_test.cpp                                         
+│  │  │  │  │  ├─ split_test.cpp                                           
+│  │  │  │  │  ├─ squeeze_test.cpp                                         
+│  │  │  │  │  ├─ strided_slice_test.cpp                                   
+│  │  │  │  │  ├─ sub_test.cpp                                             
+│  │  │  │  │  ├─ tanh_test.cpp                                            
+│  │  │  │  │  ├─ test_function.hpp                                        
+│  │  │  │  │  ├─ tfslice_test.cpp                                         
+│  │  │  │  │  ├─ transpose_test.cpp                                       
+│  │  │  │  │  └─ unpack_test.cpp                                          
+│  │  │  │  ├─ operators                                                   
+│  │  │  │  │  ├─ cl_kernels                                               
+│  │  │  │  │  │  ├─ 8X1GEMVFullyconnectedKernels.cpp                      
+│  │  │  │  │  │  ├─ 8x1FulllyConnectedKernels.cpp                         
+│  │  │  │  │  │  ├─ AddKernels.cpp                                        
+│  │  │  │  │  │  ├─ AveragepoolKernels.cpp                                
+│  │  │  │  │  │  ├─ CLCommonKernels.hpp                                   
+│  │  │  │  │  │  ├─ CastKernels.cpp                                       
+│  │  │  │  │  │  ├─ ConcatKernels.cpp                                     
+│  │  │  │  │  │  ├─ ConvolutionGEMM1xXkernels.cpp                         
+│  │  │  │  │  │  ├─ ConvolutionKernels.cpp                                
+│  │  │  │  │  │  ├─ ConvolutionWINO2x2_7x7Kernels.cpp                     
+│  │  │  │  │  │  ├─ ConvolutionWINO4x4_5x5Kernels.cpp                     
+│  │  │  │  │  │  ├─ ConvolutionWINO6x6_3x3Kernels.cpp                     
+│  │  │  │  │  │  ├─ ConvolutionWINOKernels.cpp                            
+│  │  │  │  │  │  ├─ Deconvolution1x8Kernels.cpp                           
+│  │  │  │  │  │  ├─ DeconvolutionKernels.cpp                              
+│  │  │  │  │  │  ├─ Depth2SpaceKernels.cpp                                
+│  │  │  │  │  │  ├─ DepthwiseconvolutionKernels.cpp                       
+│  │  │  │  │  │  ├─ DequantizationKernels.cpp                             
+│  │  │  │  │  │  ├─ DilationConvolutionKernels.cpp                        
+│  │  │  │  │  │  ├─ DilationKernels.cpp                                   
+│  │  │  │  │  │  ├─ DirectConvolutionKernel.cpp                           
+│  │  │  │  │  │  ├─ DirectFullyConnectedKernel.cpp                        
+│  │  │  │  │  │  ├─ DivKernels.cpp                                        
+│  │  │  │  │  │  ├─ FullyconnectedKernels.cpp                             
+│  │  │  │  │  │  ├─ GatherKernel.cpp                                      
+│  │  │  │  │  │  ├─ MaxpoolKernels.cpp                                    
+│  │  │  │  │  │  ├─ MeanKernels.cpp                                       
+│  │  │  │  │  │  ├─ MulKernels.cpp                                        
+│  │  │  │  │  │  ├─ NormalizationKernels.cpp                              
+│  │  │  │  │  │  ├─ PadConvertKernels.cpp                                 
+│  │  │  │  │  │  ├─ PadKernels.cpp                                        
+│  │  │  │  │  │  ├─ PowerVRConvolutionKernels.cpp                         
+│  │  │  │  │  │  ├─ QuantizationKernels.cpp                               
+│  │  │  │  │  │  ├─ RNNLSTMKernels.cpp                                    
+│  │  │  │  │  │  ├─ ReduceKernels.cpp                                     
+│  │  │  │  │  │  ├─ Relu1Kernels.cpp                                      
+│  │  │  │  │  │  ├─ Relu6Kernels.cpp                                      
+│  │  │  │  │  │  ├─ ReluKernels.cpp                                       
+│  │  │  │  │  │  ├─ ReshapeKernels.cpp                                    
+│  │  │  │  │  │  ├─ ResizeBilinearKernels.cpp                             
+│  │  │  │  │  │  ├─ SigmoidKernels.cpp                                    
+│  │  │  │  │  │  ├─ SoftmaxKernels.cpp                                    
+│  │  │  │  │  │  ├─ SplitKernels.cpp                                      
+│  │  │  │  │  │  ├─ SqueezeKernels.cpp                                    
+│  │  │  │  │  │  ├─ StridedSliceKernels.cpp                               
+│  │  │  │  │  │  ├─ SubKernels.cpp                                        
+│  │  │  │  │  │  ├─ TFSliceKernels.cpp                                    
+│  │  │  │  │  │  ├─ TanhKernels.cpp                                       
+│  │  │  │  │  │  ├─ TransposeKernels.cpp                                  
+│  │  │  │  │  │  └─ UnpackKernels.cpp                                     
+│  │  │  │  │  ├─ cl_optimized_impls                                       
+│  │  │  │  │  │  ├─ CL8X1GEMVFullyConnected.cpp                           
+│  │  │  │  │  │  ├─ CL8X1GEMVFullyConnected.hpp                           
+│  │  │  │  │  │  ├─ CL8x1FullyConnected.cpp                               
+│  │  │  │  │  │  ├─ CL8x1FullyConnected.hpp                               
+│  │  │  │  │  │  ├─ CLAddQuantized.cpp                                    
+│  │  │  │  │  │  ├─ CLAddQuantized.hpp                                    
+│  │  │  │  │  │  ├─ CLBaseFullyConnected.cpp                              
+│  │  │  │  │  │  ├─ CLBaseFullyConnected.hpp                              
+│  │  │  │  │  │  ├─ CLConvolutionPerChannelQuantized.cpp                  
+│  │  │  │  │  │  ├─ CLConvolutionPerChannelQuantized.hpp                  
+│  │  │  │  │  │  ├─ CLDeconvolution1x8.cpp                                
+│  │  │  │  │  │  ├─ CLDeconvolution1x8.hpp                                
+│  │  │  │  │  │  ├─ CLDeconvolutionGeneral.cpp                            
+│  │  │  │  │  │  ├─ CLDeconvolutionGeneral.hpp                            
+│  │  │  │  │  │  ├─ CLDeconvolutionMakalu.cpp                             
+│  │  │  │  │  │  ├─ CLDeconvolutionMakalu.hpp                             
+│  │  │  │  │  │  ├─ CLDeconvolutionPerChannelQuantized.cpp                
+│  │  │  │  │  │  ├─ CLDeconvolutionPerChannelQuantized.hpp                
+│  │  │  │  │  │  ├─ CLDeconvolutionQuantized.cpp                          
+│  │  │  │  │  │  ├─ CLDeconvolutionQuantized.hpp                          
+│  │  │  │  │  │  ├─ CLDepthwiseConvolution3x3TFLite.cpp                   
+│  │  │  │  │  │  ├─ CLDepthwiseConvolution3x3TFLite.hpp                   
+│  │  │  │  │  │  ├─ CLDepthwiseConvolutionPerChannelQuantized.cpp         
+│  │  │  │  │  │  ├─ CLDepthwiseConvolutionPerChannelQuantized.hpp         
+│  │  │  │  │  │  ├─ CLDepthwiseConvolutionQuantized.cpp                   
+│  │  │  │  │  │  ├─ CLDepthwiseConvolutionQuantized.hpp                   
+│  │  │  │  │  │  ├─ CLDepthwiseConvolutionTFLite.cpp                      
+│  │  │  │  │  │  ├─ CLDepthwiseConvolutionTFLite.hpp                      
+│  │  │  │  │  │  ├─ CLDepthwiseDeconvolution.cpp                          
+│  │  │  │  │  │  ├─ CLDepthwiseDeconvolution.hpp                          
+│  │  │  │  │  │  ├─ CLDilationConvolution.cpp                             
+│  │  │  │  │  │  ├─ CLDilationConvolution.hpp                             
+│  │  │  │  │  │  ├─ CLDirectConvolution.cpp                               
+│  │  │  │  │  │  ├─ CLDirectConvolution.hpp                               
+│  │  │  │  │  │  ├─ CLDirectFullyConnected.cpp                            
+│  │  │  │  │  │  ├─ CLDirectFullyConnected.hpp                            
+│  │  │  │  │  │  ├─ CLFCTFLiteTexture2D.cpp                               
+│  │  │  │  │  │  ├─ CLFCTFLiteTexture2D.hpp                               
+│  │  │  │  │  │  ├─ CLGEMM1xXConvolution.cpp                              
+│  │  │  │  │  │  ├─ CLGEMM1xXConvolution.hpp                              
+│  │  │  │  │  │  ├─ CLGEMM1xXConvolutionQuantized.cpp                     
+│  │  │  │  │  │  ├─ CLGEMM1xXConvolutionQuantized.hpp                     
+│  │  │  │  │  │  ├─ CLGEMMConvolution.cpp                                 
+│  │  │  │  │  │  ├─ CLGEMMConvolution.hpp                                 
+│  │  │  │  │  │  ├─ CLGEMMConvolutionQuantized.cpp                        
+│  │  │  │  │  │  ├─ CLGEMMConvolutionQuantized.hpp                        
+│  │  │  │  │  │  ├─ CLKernel1x1Convolution.cpp                            
+│  │  │  │  │  │  ├─ CLKernel1x1Convolution.hpp                            
+│  │  │  │  │  │  ├─ CLMemAlign.cpp                                        
+│  │  │  │  │  │  ├─ CLMemAlign.hpp                                        
+│  │  │  │  │  │  ├─ CLPadConvert.cpp                                      
+│  │  │  │  │  │  ├─ CLPadConvert.hpp                                      
+│  │  │  │  │  │  ├─ CLPowerVRConvolution.cpp                              
+│  │  │  │  │  │  ├─ CLPowerVRConvolution.hpp                              
+│  │  │  │  │  │  ├─ CLQuantizedDirectConvolution.cpp                      
+│  │  │  │  │  │  ├─ CLQuantizedDirectConvolution.hpp                      
+│  │  │  │  │  │  ├─ CLWINO2x2_7x7.cpp                                     
+│  │  │  │  │  │  ├─ CLWINO2x2_7x7.hpp                                     
+│  │  │  │  │  │  ├─ CLWINO4x4_5x5.cpp                                     
+│  │  │  │  │  │  ├─ CLWINO4x4_5x5.hpp                                     
+│  │  │  │  │  │  ├─ CLWINO6x6_3x3.cpp                                     
+│  │  │  │  │  │  ├─ CLWINO6x6_3x3.hpp                                     
+│  │  │  │  │  │  ├─ CLWINOConvolution.cpp                                 
+│  │  │  │  │  │  └─ CLWINOConvolution.hpp                                 
+│  │  │  │  │  ├─ cl_quantized_utils                                       
+│  │  │  │  │  │  ├─ KernelUtil.cpp                                        
+│  │  │  │  │  │  ├─ KernelUtil.hpp                                        
+│  │  │  │  │  │  ├─ QuantizationUtil.cpp                                  
+│  │  │  │  │  │  └─ QuantizationUtil.hpp                                  
+│  │  │  │  │  ├─ cl_rnnlstm_utils                                         
+│  │  │  │  │  │  ├─ LstmEval.cpp                                          
+│  │  │  │  │  │  ├─ LstmEval.hpp                                          
+│  │  │  │  │  │  ├─ RNNLSTMUtils.cpp                                      
+│  │  │  │  │  │  └─ RNNLSTMUtils.hpp                                      
+│  │  │  │  │  ├─ gemmlowp                                                 
+│  │  │  │  │  │  ├─ fixedpoint                                            
+│  │  │  │  │  │  │  ├─ fixedpoint.h                                       
+│  │  │  │  │  │  │  ├─ fixedpoint_avx.h                                   
+│  │  │  │  │  │  │  ├─ fixedpoint_msa.h                                   
+│  │  │  │  │  │  │  ├─ fixedpoint_neon.h                                  
+│  │  │  │  │  │  │  └─ fixedpoint_sse.h                                   
+│  │  │  │  │  │  ├─ internal                                              
+│  │  │  │  │  │  │  ├─ allocator.h                                        
+│  │  │  │  │  │  │  ├─ block_params.h                                     
+│  │  │  │  │  │  │  ├─ common.h                                           
+│  │  │  │  │  │  │  ├─ compute.h                                          
+│  │  │  │  │  │  │  ├─ dispatch_gemm_shape.h                              
+│  │  │  │  │  │  │  ├─ kernel.h                                           
+│  │  │  │  │  │  │  ├─ kernel_avx.h                                       
+│  │  │  │  │  │  │  ├─ kernel_default.h                                   
+│  │  │  │  │  │  │  ├─ kernel_msa.h                                       
+│  │  │  │  │  │  │  ├─ kernel_neon.h                                      
+│  │  │  │  │  │  │  ├─ kernel_reference.h                                 
+│  │  │  │  │  │  │  ├─ kernel_sse.h                                       
+│  │  │  │  │  │  │  ├─ multi_thread_gemm.h                                
+│  │  │  │  │  │  │  ├─ output.h                                           
+│  │  │  │  │  │  │  ├─ output_avx.h                                       
+│  │  │  │  │  │  │  ├─ output_msa.h                                       
+│  │  │  │  │  │  │  ├─ output_neon.h                                      
+│  │  │  │  │  │  │  ├─ output_sse.h                                       
+│  │  │  │  │  │  │  ├─ pack.h                                             
+│  │  │  │  │  │  │  ├─ pack_avx.h                                         
+│  │  │  │  │  │  │  ├─ pack_msa.h                                         
+│  │  │  │  │  │  │  ├─ pack_neon.h                                        
+│  │  │  │  │  │  │  ├─ pack_sse.h                                         
+│  │  │  │  │  │  │  ├─ platform.h                                         
+│  │  │  │  │  │  │  ├─ simd_wrappers.h                                    
+│  │  │  │  │  │  │  ├─ simd_wrappers_common_neon_sse.h                    
+│  │  │  │  │  │  │  ├─ simd_wrappers_msa.h                                
+│  │  │  │  │  │  │  ├─ simd_wrappers_neon.h                               
+│  │  │  │  │  │  │  ├─ simd_wrappers_sse.h                                
+│  │  │  │  │  │  │  ├─ single_thread_gemm.h                               
+│  │  │  │  │  │  │  └─ unpack.h                                           
+│  │  │  │  │  │  ├─ profiling                                             
+│  │  │  │  │  │  │  ├─ instrumentation.h                                  
+│  │  │  │  │  │  │  ├─ profiler.h                                         
+│  │  │  │  │  │  │  └─ pthread_everywhere.h                               
+│  │  │  │  │  │  └─ public                                                
+│  │  │  │  │  │     ├─ bit_depth.h                                        
+│  │  │  │  │  │     ├─ gemmlowp.h                                         
+│  │  │  │  │  │     ├─ map.h                                              
+│  │  │  │  │  │     └─ output_stages.h                                    
+│  │  │  │  │  ├─ CLActivation.cpp                                         
+│  │  │  │  │  ├─ CLActivation.hpp                                         
+│  │  │  │  │  ├─ CLAdd.cpp                                                
+│  │  │  │  │  ├─ CLAdd.hpp                                                
+│  │  │  │  │  ├─ CLAveragepool.cpp                                        
+│  │  │  │  │  ├─ CLAveragepool.hpp                                        
+│  │  │  │  │  ├─ CLBidirectionalSequenceLstm.cpp                          
+│  │  │  │  │  ├─ CLBidirectionalSequenceLstm.hpp                          
+│  │  │  │  │  ├─ CLCast.cpp                                               
+│  │  │  │  │  ├─ CLCast.hpp                                               
+│  │  │  │  │  ├─ CLConcat.cpp                                             
+│  │  │  │  │  ├─ CLConcat.hpp                                             
+│  │  │  │  │  ├─ CLConvolution.cpp                                        
+│  │  │  │  │  ├─ CLConvolution.hpp                                        
+│  │  │  │  │  ├─ CLDeQuantization.cpp                                     
+│  │  │  │  │  ├─ CLDeQuantization.hpp                                     
+│  │  │  │  │  ├─ CLDeconvolution.cpp                                      
+│  │  │  │  │  ├─ CLDeconvolution.hpp                                      
+│  │  │  │  │  ├─ CLDepth2Space.cpp                                        
+│  │  │  │  │  ├─ CLDepth2Space.hpp                                        
+│  │  │  │  │  ├─ CLDepthwiseConvolution.cpp                               
+│  │  │  │  │  ├─ CLDepthwiseConvolution.hpp                               
+│  │  │  │  │  ├─ CLDiv.cpp                                                
+│  │  │  │  │  ├─ CLDiv.hpp                                                
+│  │  │  │  │  ├─ CLFullyConnected.cpp                                     
+│  │  │  │  │  ├─ CLFullyConnected.hpp                                     
+│  │  │  │  │  ├─ CLGather.cpp                                             
+│  │  │  │  │  ├─ CLGather.hpp                                             
+│  │  │  │  │  ├─ CLLayoutConvert.cpp                                      
+│  │  │  │  │  ├─ CLLayoutConvert.hpp                                      
+│  │  │  │  │  ├─ CLMaxpool.cpp                                            
+│  │  │  │  │  ├─ CLMaxpool.hpp                                            
+│  │  │  │  │  ├─ CLMean.cpp                                               
+│  │  │  │  │  ├─ CLMean.hpp                                               
+│  │  │  │  │  ├─ CLMul.cpp                                                
+│  │  │  │  │  ├─ CLMul.hpp                                                
+│  │  │  │  │  ├─ CLNormalization.cpp                                      
+│  │  │  │  │  ├─ CLNormalization.hpp                                      
+│  │  │  │  │  ├─ CLPad.cpp                                                
+│  │  │  │  │  ├─ CLPad.hpp                                                
+│  │  │  │  │  ├─ CLQuantization.cpp                                       
+│  │  │  │  │  ├─ CLQuantization.hpp                                       
+│  │  │  │  │  ├─ CLReduce.cpp                                             
+│  │  │  │  │  ├─ CLReduce.hpp                                             
+│  │  │  │  │  ├─ CLRelu.cpp                                               
+│  │  │  │  │  ├─ CLRelu.hpp                                               
+│  │  │  │  │  ├─ CLRelu1.cpp                                              
+│  │  │  │  │  ├─ CLRelu1.hpp                                              
+│  │  │  │  │  ├─ CLRelu6.cpp                                              
+│  │  │  │  │  ├─ CLRelu6.hpp                                              
+│  │  │  │  │  ├─ CLReshape.cpp                                            
+│  │  │  │  │  ├─ CLReshape.hpp                                            
+│  │  │  │  │  ├─ CLResizeBilinear.cpp                                     
+│  │  │  │  │  ├─ CLResizeBilinear.hpp                                     
+│  │  │  │  │  ├─ CLSigmoid.cpp                                            
+│  │  │  │  │  ├─ CLSigmoid.hpp                                            
+│  │  │  │  │  ├─ CLSoftmax.cpp                                            
+│  │  │  │  │  ├─ CLSoftmax.hpp                                            
+│  │  │  │  │  ├─ CLSplit.cpp                                              
+│  │  │  │  │  ├─ CLSplit.hpp                                              
+│  │  │  │  │  ├─ CLSqueeze.cpp                                            
+│  │  │  │  │  ├─ CLSqueeze.hpp                                            
+│  │  │  │  │  ├─ CLStridedSlice.cpp                                       
+│  │  │  │  │  ├─ CLStridedSlice.hpp                                       
+│  │  │  │  │  ├─ CLSub.cpp                                                
+│  │  │  │  │  ├─ CLSub.hpp                                                
+│  │  │  │  │  ├─ CLTFSlice.cpp                                            
+│  │  │  │  │  ├─ CLTFSlice.hpp                                            
+│  │  │  │  │  ├─ CLTanh.cpp                                               
+│  │  │  │  │  ├─ CLTanh.hpp                                               
+│  │  │  │  │  ├─ CLTranspose.cpp                                          
+│  │  │  │  │  ├─ CLTranspose.hpp                                          
+│  │  │  │  │  ├─ CLUnpack.cpp                                             
+│  │  │  │  │  └─ CLUnpack.hpp                                             
+│  │  │  │  ├─ third_party                                                 
+│  │  │  │  │  ├─ half                                                     
+│  │  │  │  │  │  └─ half.hpp                                              
+│  │  │  │  │  └─ opencl_stub                                              
+│  │  │  │  │     ├─ CL                                                    
+│  │  │  │  │     │  ├─ cl.h                                               
+│  │  │  │  │     │  ├─ cl.hpp                                             
+│  │  │  │  │     │  ├─ cl2.hpp                                            
+│  │  │  │  │     │  ├─ cl_d3d10.h                                         
+│  │  │  │  │     │  ├─ cl_d3d11.h                                         
+│  │  │  │  │     │  ├─ cl_dx9_media_sharing.h                             
+│  │  │  │  │     │  ├─ cl_egl.h                                           
+│  │  │  │  │     │  ├─ cl_ext.h                                           
+│  │  │  │  │     │  ├─ cl_gl.h                                            
+│  │  │  │  │     │  ├─ cl_gl_ext.h                                        
+│  │  │  │  │     │  ├─ cl_platform.h                                      
+│  │  │  │  │     │  └─ opencl.h                                           
+│  │  │  │  │     └─ opencl_stubs.c                                        
+│  │  │  │  ├─ CMakeLists.txt                                              
+│  │  │  │  ├─ gpu_op_constructor.cc                                       
+│  │  │  │  ├─ gpu_op_constructor.h                                        
+│  │  │  │  ├─ gpu_op_executor.cc                                          
+│  │  │  │  ├─ gpu_op_executor.h                                           
+│  │  │  │  ├─ gpu_userdriver.cc                                           
+│  │  │  │  ├─ gpu_userdriver.h                                            
+│  │  │  │  └─ gpu_userdriver_test.cc                                      
+│  │  │  └─ unified                                                        
+│  │  │     ├─ drv_usr_if.h                                                
+│  │  │     ├─ dsp_cgo_info.cc                                             
+│  │  │     ├─ dsp_cgo_info.h                                              
+│  │  │     ├─ dsp_parse_table.h                                           
+│  │  │     ├─ dsp_ucgo_info.cc                                            
+│  │  │     ├─ dsp_ucgo_info.h                                             
+│  │  │     ├─ dsp_ud_step1.md                                             
+│  │  │     ├─ dsp_userdriver.cc                                           
+│  │  │     ├─ dsp_userdriver.h                                            
+│  │  │     ├─ dsp_userdriver_test.cc                                      
+│  │  │     ├─ error_codes.h                                               
+│  │  │     ├─ link_vs4l.cc                                                
+│  │  │     ├─ link_vs4l.h                                                 
+│  │  │     ├─ link_vs4l_config.h                                          
+│  │  │     ├─ npu_userdriver.cc                                           
+│  │  │     ├─ npu_userdriver.h                                            
+│  │  │     ├─ npu_userdriver_test.cc                                      
+│  │  │     ├─ profile_util.h                                              
+│  │  │     ├─ readme.md                                                   
+│  │  │     ├─ utils.h                                                     
+│  │  │     └─ vs4l.h                                                      
+│  │  ├─ 11_push.sh                                                        
+│  │  ├─ 11_push_2100.sh                                                   
+│  │  ├─ Android.bp                                                        
+│  │  ├─ CMakeLists.txt                                                    
+│  │  ├─ CMakeLists.txt.in                                                 
+│  │  ├─ README.md                                                         
+│  │  ├─ build.sh                                                          
+│  │  ├─ coverage.py                                                       
+│  │  ├─ enn_output.filelist                                               
+│  │  ├─ exp.sh                                                            
+│  │  ├─ push.sh                                                           
+│  │  ├─ switchToENN.sh                                                    
+│  │  └─ x86_build.cmake                                                   
+│  ├─ test                                                                 
+│  │  ├─ script                                                            
+│  │  │  ├─ test_config                                                    
+│  │  │  │  ├─ e2e_test.yaml                                               
+│  │  │  │  ├─ sqe_test.yaml                                               
+│  │  │  │  └─ test_vector.yaml                                            
+│  │  │  ├─ test_module                                                    
+│  │  │  │  ├─ e2e_test.py                                                 
+│  │  │  │  ├─ list_test.py                                                
+│  │  │  │  ├─ parser.py                                                   
+│  │  │  │  ├─ print_util.py                                               
+│  │  │  │  ├─ sqe_test.py                                                 
+│  │  │  │  ├─ test_func.py                                                
+│  │  │  │  └─ testsuite.py                                                
+│  │  │  ├─ enn_test.py                                                    
+│  │  │  └─ texttable.py                                                   
+│  │  ├─ test_app                                                          
+│  │  │  ├─ include                                                        
+│  │  │  │  ├─ CLI11.hpp                                                   
+│  │  │  │  ├─ cli_parser.h                                                
+│  │  │  │  ├─ enn_test.h                                                  
+│  │  │  │  ├─ enn_test_log.h                                              
+│  │  │  │  ├─ enn_test_reporter.h                                         
+│  │  │  │  ├─ enn_test_type.hpp                                           
+│  │  │  │  └─ test_manager.h                                              
+│  │  │  ├─ src                                                            
+│  │  │  │  ├─ cli_parser.cpp                                              
+│  │  │  │  ├─ enn_test.cpp                                                
+│  │  │  │  ├─ enn_test_api.cpp                                            
+│  │  │  │  ├─ enn_test_reporter.cpp                                       
+│  │  │  │  ├─ main.cpp                                                    
+│  │  │  │  ├─ test_list.cpp                                               
+│  │  │  │  └─ test_manager.cpp                                            
+│  │  │  └─ Android.bp                                                     
+│  │  └─ README.md                                                         
+│  ├─ tools                                                                
+│  │  ├─ SAM-tools                                                         
+│  │  │  ├─ build_enn.sh                                                   
+│  │  │  ├─ clean_enn.sh                                                   
+│  │  │  ├─ sam_cli.cfg                                                    
+│  │  │  ├─ sam_score_setting_guide.md                                     
+│  │  │  └─ src_exclude.cfg                                                
+│  │  ├─ build_generator                                                   
+│  │  │  ├─ Android.bp.in                                                  
+│  │  │  ├─ CMakeLists.txt                                                 
+│  │  │  ├─ generate_bp.sh                                                 
+│  │  │  ├─ machine_info.inc                                               
+│  │  │  └─ parameters.cmake                                               
+│  │  ├─ eden_nnc_displayer                                                
+│  │  │  ├─ flatbuffers                                                    
+│  │  │  │  ├─ base.h                                                      
+│  │  │  │  ├─ flatbuffers.h                                               
+│  │  │  │  ├─ flexbuffers.h                                               
+│  │  │  │  ├─ stl_emulation.h                                             
+│  │  │  │  └─ util.h                                                      
+│  │  │  ├─ include                                                        
+│  │  │  │  └─ eden_model_types.h                                          
+│  │  │  ├─ sample_nnc                                                     
+│  │  │  │  ├─ NPU_AicClassifier.nnc                                       
+│  │  │  │  ├─ NPU_AicDetector.nnc                                         
+│  │  │  │  └─ NPU_MobilenetV1.nnc                                         
+│  │  │  ├─ README.md                                                      
+│  │  │  ├─ build.sh                                                       
+│  │  │  ├─ schema.fbs                                                     
+│  │  │  ├─ schema_generated.h                                             
+│  │  │  ├─ tl_displayer.cpp                                               
+│  │  │  └─ tl_displayer.h                                                 
+│  │  ├─ hal_converter                                                     
+│  │  │  ├─ types_hal_footer.txt                                           
+│  │  │  ├─ types_hal_header.txt                                           
+│  │  │  └─ types_to_header.py                                             
+│  │  ├─ cgo_displayer_x86                                                 
+│  │  └─ tl_displayer_x86                                                  
+│  ├─ Android.bp                                                           
+│  ├─ CPPLINT.cfg                                                          
+│  ├─ apply_commit_message                                                 
+│  └─ git-commit-template.txt                                              
+├─ Android.bp.rename                                                       
+└─ enn.mk                                                                  
+
+
+
+
+error: device/samsung/erd8825/: main/android12/device/samsung/erd8825 checkout 836bf3396f7b7a0446fbe128438cec58df18a4af
+error: device/samsung/erd9925/: main/android12/device/samsung/erd9925 checkout 377326572929de49ba972ecd057f6e84bc677e69
+error: device/samsung/sepolicy/: keystone/android12/device/samsung/sepolicy checkout 0b69488595240c3ac39748c358bea537c6beabcf
+error: device/samsung/universal2100/: keystone/android12/device/samsung/universal2100 checkout 2c1c6102ac9db1c3cc2e88974b46a5cd06f14c6f
+error: device/samsung/universal8825/: main/android12/device/samsung/universal8825 checkout 9fe85339e9e19f9772bde0de807d39f0bdee096e
+error: device/samsung/universal9925/: main/android12/device/samsung/universal9925 checkout b9b86574bba7fd0884c2f7083c17855bc9885e5e
+error: hardware/samsung_slsi/exynos/: keystone/android12/platform/hardware/samsung_slsi/exynos checkout 515b053520ecdf12ccc2be78304beb4e4a29bd9c
+error: packages/apps/Bluetooth/: keystone/android12/platform/packages/apps/Bluetooth checkout b3970b603ad7f97acec3c7558f0aac5112eb01fa
+error: system/bt/: keystone/android12/platform/system/bt checkout 652ea7915b34754baae0b234e01f977d9165f0e0
+error: vendor/samsung_slsi/exynos/audio/hal/sec/: main/android12/platform/vendor/samsung_slsi/exynos/audio/hal/sec checkout fc67fc3ffc9ea1e99fac6a9a2a78fe9cb7bc9497
+error: vendor/samsung_slsi/exynos/audio/hal/unified/: main/android12/platform/vendor/samsung_slsi/exynos/audio/hal/unified checkout 0dbc69a13c4fe59654b4d8d92dd47be3893d4dd3
+error: vendor/samsung_slsi/exynos/audio/sthal/sec/: main/android12/platform/vendor/samsung_slsi/exynos/audio/sthal/sec checkout fbaf02e3c683858000788dafaf2a54f2372e35be
+error: vendor/samsung_slsi/exynos/audio/sthal/unified/: main/android12/platform/vendor/samsung_slsi/exynos/audio/sthal/unified checkout 03a3444df350d4c8343b3416e76f95eaf2387895
+error: vendor/samsung_slsi/exynos/camera/O21/hal3/: main/android12/platform/vendor/samsung_slsi/exynos/camera/O21/hal3 checkout 5821eca36bcc65a60c4e962c843d9cb085248265
+error: vendor/samsung_slsi/exynos/camera/O21M_C/hal3/: main/android12/platform/vendor/samsung_slsi/exynos/camera/O21M_C/hal3 checkout 38514e520eedf730575292b64a63c0126bd63474
+error: vendor/samsung_slsi/exynos/camera/P22/core/: main/android12/platform/vendor/samsung_slsi/exynos/camera/P22/core checkout 62a33ed930dd49df92c1c30c9e91f03adc5f608c
+error: vendor/samsung_slsi/exynos/camera/P22M/hal3/: main/android12/platform/vendor/samsung_slsi/exynos/camera/P22M/hal3 checkout 041b29bc04e409c319c5fe7f5bd373a1b2cfcf51
+error: vendor/samsung_slsi/exynos/camera/P22M_C/hal3/: main/android12/platform/vendor/samsung_slsi/exynos/camera/P22M_C/hal3 checkout ed9407131eb297ac8f897fe347542ce415073f67
+error: vendor/samsung_slsi/exynos/enn_saidl_driver/: keystone/android12/platform/vendor/samsung_slsi/exynos/enn_saidl_driver checkout a2a3eab235a772ee7861697a391f218cb9303aa6
+error: vendor/samsung_slsi/hardware/: keystone/android12/platform/vendor/samsung_slsi/hardware checkout 7f04b7a88360a44fa6f59eb2107d552b58415394
+error: vendor/samsung_slsi/ims/shannon-qns/: keystone/android12/platform/vendor/samsung_slsi/ims/shannon-qns checkout 33d1f31bfa816757a8086101d1926379dc2ae21a
+error: vendor/samsung_slsi/telephony/exynos-ril/: keystone/android12/platform/vendor/samsung_slsi/telephony/exynos-ril checkout ddfa869505bbfa0cb7bc5bc77f656a77f5a70634
+
